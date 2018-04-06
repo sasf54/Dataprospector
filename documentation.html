@@ -1,0 +1,364 @@
+<html>
+
+<head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>dataprospector - Documentation</title>
+        <script type='text/javascript' src="js/jquery-1.9.1.0.min.js"></script>
+        <script type='text/javascript' src="js/bootstrap.js"></script>
+        <script type='text/javascript' src="js/bootstrap-multiselect.js"></script>
+        <script type='text/javascript' src="js/bootstrap-slider.js"></script>
+        <script type='text/javascript' src="js/bootstrap-dataprospector.js"></script>
+        <script type='text/javascript' src="js/cpu_items.js"></script>
+        <script type='text/javascript' src="js/mb_items.js"></script>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <link href="css/bootstrap-dataprospector.css" rel="stylesheet">
+        <link href="css/bootstrap-multiselect.css" rel="stylesheet">
+        <link href="css/bootstrap-slider.css" rel="stylesheet">
+        <link href="css/open-iconic-bootstrap.css" rel="stylesheet">
+
+    </head>
+</head>
+<body>
+<nav class="navbar  navbar-toggleable-md navbar-light bg-inverse navbar-inverse sticky-top">
+
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+        aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse justify-content-md-center " id="navigation">
+    <ul class="navbar-nav">
+        <li class="nav-item "><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item "><a class="nav-link" href="features.html">Features</a></li>
+        <li class="nav-item active"><a class="nav-link" href="documentation.html">Documentation</a></li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="http://example.com" id="nav_examples"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Examples</a>
+            <div class="dropdown-menu" aria-labelledby="nav_examples">
+                <a class="dropdown-item tooltip_init" href="dataprospector.html" data-toggle="tooltip"
+                   title="Initializing from two array - object">Example 1</a>
+                <a class="dropdown-item tooltip_init" href="dataprospector2.html" data-toggle="tooltip"
+                   title="Initializing from two array - array">Example 2</a>
+                <a class="dropdown-item tooltip_init" href="dataprospector3.html" data-toggle="tooltip"
+                   title="Initializing from existing table">Example 3</a>
+                <a class="dropdown-item tooltip_init" href="dataprospector4.html" data-toggle="tooltip"
+                   title="Selection and download">Example 4</a>
+                <a class="dropdown-item tooltip_init" href="dataprospector5.html" data-toggle="tooltip"
+                   title="Init from file open">Example 5</a>
+                <a class="dropdown-item tooltip_init" href="dataprospector6.html" data-toggle="tooltip"
+                   title="Init from array - array and advanced filters">Example 6</a>
+            </div>
+        </li>
+    </ul>
+</div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <a data-toggle="collapse"><h2>Documentation</h2></a>
+        </div>
+    </div>
+    <div class="panel-collapse collapse show" id="featuresMain">
+        <div class="row col-12">
+            <a data-toggle="collapse" href="#easyToApply"><h4>Usage example</h4></a>
+            <div class="w-100 mb-5">
+                Here is a full example how to be used:
+                <div class="panel-collapse collapse " id="easyToApply">
+                    <div class="paragraph-step">
+                        Include the required javascripts and CSSs.
+                        <code>
+                            <div class="tab0">&lt;html&gt;</div>
+                            <div class="tab1">&lt;head&gt;</div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript'
+                                src="js/jquery-1.9.1.0.min.js"&gt;&lt;/script&gt;
+                            </div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript' src="js/bootstrap.js"&gt;&lt;/script&gt;</div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript' src="js/bootstrap-slider.js"&gt;&lt;/script&gt;</div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript'
+                                src="js/bootstrap-multiselect.js"&gt;&lt;/script&gt;
+                            </div>
+                            <div class="tab1">&lt;script type='text/javascript' src="js/bootstrap-dataprospector.js"&gt;&lt;/script&gt;</div>
+                            <div class="tab1">&lt;script type='text/javascript'
+                                src="js/cpu_items.js"&gt;&lt;/script&gt;
+                            </div>
+                            <div class="tab1 dependency">&lt;link href="css/bootstrap.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1 dependency">&lt;link href="css/bootstrap-slider.css" rel="stylesheet"&gt;
+                            </div>
+                            <div class="tab1 dependency">&lt;link href="css/bootstrap-multiselect.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1 dependency">&lt;link href="css/open-iconic-bootstrap.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1">&lt;link href="css/bootstrap-dataprospector.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1">&lt;/head&gt;</div>
+                            <div class="tab1">&lt;body&gt;</div>
+                            <div class="tab2">&lt;div class="some_container_div"&gt;</div>
+                            <div class="tab3">&lt;div id="here_comes_the_table" class="some_custom_styling"&gt;</div>
+                            <div class="tab3">&lt;/div&gt;</div>
+                            <div class="tab2">&lt;/div&gt;</div>
+                            <div class="tab1">&lt;/body&gt;</div>
+                            <div class="tab1">&lt;script type="application/javascript"&gt;</div>
+                            <div class="tab2">var cpu_dt = $("#here_comes_the_table").dataprospector({data:cpu_items});</div>
+                            <div class="tab1">&lt;/script&gt;</div>
+
+                            <div class="tab0">&lt;/html&gt;</div>
+
+                        </code>
+                        The code marked as
+                        <div class="dependency">dependency</div>
+                        can be downloaded
+                        from the their own website or github repository.
+                    </div>
+                </div>
+            </div>
+
+            <a data-toggle="collapse" href="#options"><h4>Options</h4></a>
+            <div class="w-100 mb-5">
+                List of all the available option variables and explained
+                <div class="panel-collapse collapse show" id="options">
+                    <div class="paragraph-step">
+                        Here is a list, how to use the library.<br/>
+                        <blockquote>Available options for array</blockquote>
+                        is applied when the data as an array of <strong>Array</strong>:<br/>
+                        <code>
+                            [
+                            <div class="tab1">[ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor",...],</div>
+                            <div class="tab1">[...],...</div>
+                            ]
+                        </code>
+                        <blockquote>Available options for structure</blockquote>
+                        is applied when the data as an array of <strong>Structure</strong>:<br/>
+                        <code>
+                            [
+                            <div class="tab1">{ "domain":"ipon.hu", "name":"AMD A4-4020 3.20GHz FM2 BOX",...},</div>
+                            <div class="tab1">{...},</div>
+                            <div class="tab1">...</div>
+                            ]
+                        </code>
+                        <table class="table options_list table-striped table-bordered w-100" id="dataprospector_options">
+                            <thead>
+                            <th>Option name</th>
+                            <th>Available options for data: Array</th>
+                            <th>Available options for data: Structure</th>
+                            <th>Description</th>
+                            </thead>
+                            <tbody>
+                            <tr class="option_mandatory">
+                                <td>data</td>
+                                <td>
+                                    [ [ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor", ...], [...], ...]
+                                </td>
+                                <td>[{ "domain":"ipon.hu", "name":"AMD A4-4020 3.20GHz FM2 BOX", ...},{...},...]
+                                </td>
+                                <td>The data is rendered from here. If not set, or the import_first_line_headers = true,
+                                    then it will try to process the pointing table for data
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>clone_data</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>Default is false. Should the plugin clone the data? If not cloned, it will make
+                                    changes to the original dataset: new columns (advanced filters, selected, filtered_out columns)</td>
+                            </tr>
+                            <tr>
+                                <td>headers</td>
+                                <td>['domain','name','price']</td>
+                                <td>[0,1,2]</td>
+                                <td>List of headers, mostly for internal operations.</td>
+                            </tr>
+                            <tr>
+                                <td>header_names</td>
+                                <td>{domain:"Shop", name:"Product name", price:'Price", ...}</td>
+                                <td>["Shop", "Product name", 'Price", ...] OR {0:"Shop", 1:"Product name", 2:'Price",
+                                    ...}
+                                </td>
+                                <td>Overwrites the names of the headers (in headers and filters)</td>
+                            </tr>
+                            <tr>
+                                <td>header_types</td>
+                                <td>{domain:'enum', name:'string', price:'range', mem_speed:'array_range',...}</td>
+                                <td>['enum','string','range','array_range',...]</td>
+                                <td>Override the filter type, the plugin automatically estimates them from the data.</td>
+                            </tr>
+                            <tr>
+                                <td>filters</td>
+                                <td>['domain','name','price']</td>
+                                <td>[0,1,2]</td>
+                                <td>List of columns, to enable the filtering on.
+                                    If empty, it will use all of the columns. Set to false, to turn off false.
+                                    Columns, that are not listed in the headers or filters will not be visible
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>external_filters</td>
+                                <td>[<br/>
+                                    {name: "price", type: "range", min:10,max:200},<br/>
+                                    {name: "name",  type: "string", string:"findme"},<br/>
+                                    {name: "family",  type: "options", string:"athlon"},<br/>
+                                    ...<br/>
+                                    ]
+                                </td>
+                                <td>[<br/>
+                                    {name: "price", type: "range", min:10,max:200},<br/>
+                                    {name: "name",  type: "string", string:"findme"},<br/>
+                                    {name: "family",  type: "options", string:"athlon"},<br/>
+                                    ...<br/>
+                                    ]
+                                </td>
+                                <td>Filters that are applied from javascript, or from menucontext.
+                                    External_filter array will be overwritten, so if updated, the old external filters
+                                    should be resent with the new ones. Menu context's filter like this will add a new filter to the list.
+                                    Calling the externalFilters(array_of_filters) will replace all the external filters.
+                                    (This does not affects the filters, and the advanced filters modified by the user)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>advanced_filters</td>
+                                <td>[<br/>
+                                    {name: "price / power", formula: "price/power", unit: "Ft / W"},<br/>
+                                    {name: "price/score", formula: "price/bench_score", unit: "Ft/Sc"},<br/>
+                                    ...<br/>
+                                    ]
+                                </td>
+                                <td>[<br/>
+                                    {name: "price / power", formula: "2/3", unit: "Ft / W"},<br/>
+                                    {name: "price/score", formula: "2/3", unit: "Ft/Sc"},<br/>
+                                    ...<br/>
+                                    ]
+                                </td>
+                                <td>If it's true (anything else, than false), than the advanced filters will be
+                                    available, and the filter, and the content the filter depending will be rendered.
+                                    This means, a new column will be created in the data, with the formula given.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>header_shown</td>
+                                <td>['domain','name','price']</td>
+                                <td>[0,1,2]</td>
+                                <td>What headers should be displayed. If the filters are not changed, these will be shown as filters as default.</td>
+                            </tr>
+                            <tr>
+                                <td>filters_opened</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>The filters side panel should be opened after initialization.</td>
+                            </tr>
+                            <tr>
+                                <td>filter_animation_time</td>
+                                <td>number in ms</td>
+                                <td>number in ms</td>
+                                <td>How long should the filter open / close animations do. Default is 1000 ms.</td>
+                            </tr>
+                            <tr>
+                                <td>untis</td>
+                                <td>{price:"Ft",power:"W",freq:"Mhz",...}</td>
+                                <td>[3:"Ft",5:"W",6:"Mhz",...}</td>
+                                <td>The units it should display in: listing, details and filter limit values.
+                                    Will append the unit at the end of the value
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>items_per_page</td>
+                                <td>25</td>
+                                <td>25</td>
+                                <td>How many item should be printed in a single page</td>
+                            </tr>
+                            <tr>
+                                <td>sort_by</td>
+                                <td>'name'</td>
+                                <td>1</td>
+                                <td>The default sort column. Can be changed later. When changing later manually, the dataprospector.sortBy() should be
+                                    called after.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>sort_reverse</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>The data sorting direction (ascending / descending).  When changing later manually, the dataprospector.sortBy() should be
+                                    called after.</td>
+                            </tr>
+                            <tr>
+                                <td>item_details_attribute_per_row</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>How many attribute should be rendered in the item details element per row.</td>
+                            </tr>
+                            <tr>
+                                <td>selection</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>Creates an extra column with checkbox, that can be queried.</td>
+                            </tr>
+                            <tr>
+                                <td>import_first_line_headers</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>If the target is an HTML table with existing data to process,
+                                    and you want to explicitly tell, that the first line is the headers.
+                                    This is advised, when the header line is the same structure as the rest of the
+                                    table.
+                                    tr -&gt; td
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>context_menu</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>On right-clicking on an item should bring a menu up.
+                                    Default is false.
+                                    If true, it will contain:<br/>
+                                    <strong>Filter like these</strong><br/>
+                                    <strong>Reset manual filters</strong><br/>
+                                    <strong>Reset all filters</strong><br/>
+                                    <strong>Select all remaining element</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>context_menu_download</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>Only valid, if the <strong>context_menu</strong> is enabled and the <strong>selection</strong> is also enabled
+                                    On enabling, it will give several downloading options, which will only download
+                                    the selected items.
+                                    Default is false.
+                                    If true, it will contain:<br/>
+                                    <strong>Download selected as JSON</strong><br/>
+                                    <strong>Download selected as CSV</strong><br/>
+                                    <strong>Download selected as TXT</strong><br/>
+                                    <strong>Download selected as XML (atributes)</strong><br/>
+                                    <strong>Download selected as XML (tags)</strong><br/>
+                                    <strong>Download selected as SQL</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>no_details</td>
+                                <td>true/false</td>
+                                <td>true/false</td>
+                                <td>Disables the item details when hover over a row for details. Default is false: item details is enabled.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        There are html templates that can be overwritten, but if you want to do that,
+                        you should look at the source for more information.
+                        <br/>
+                        <input type="button" value="I want to search in it" onclick="dataprospector_options()"/>
+                    </div>
+                    <script type="text/javascript">
+                        var dataprospector_options_table;
+                        function dataprospector_options() {
+                            dataprospector_options_table = new Dataprospector($("#dataprospector_options"),{items_per_page:8,sort_by:'Option name',item_details_attribute_per_row:1});
+                        }
+                    </script>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

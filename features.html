@@ -1,0 +1,1538 @@
+<html>
+
+<head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>dataprospector - Features</title>
+        <script type='text/javascript' src="js/jquery-1.9.1.0.min.js"></script>
+        <script type='text/javascript' src="js/bootstrap.js"></script>
+        <script type='text/javascript' src="js/bootstrap-multiselect.js"></script>
+        <script type='text/javascript' src="js/bootstrap-slider.js"></script>
+        <!--<script type='text/javascript' src="js/bootstrap-dataprospector.js"></script>-->
+        <script type='text/javascript' src="js/bootstrap-dataprospector.min.js"></script>
+        <script type='text/javascript' src="js/jquery.csv.js"></script>
+        <script type='text/javascript' src="js/cpu_items.js"></script>
+        <script type='text/javascript' src="js/mb_items.js"></script>
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <!--<link href="css/bootstrap-dataprospector.css" rel="stylesheet">-->
+        <link href="css/bootstrap-dataprospector.min.css" rel="stylesheet">
+        <link href="css/bootstrap-multiselect.css" rel="stylesheet">
+        <link href="css/bootstrap-slider.css" rel="stylesheet">
+        <link href="css/open-iconic-bootstrap.css" rel="stylesheet">
+
+    </head>
+</head>
+<body>
+<nav class="navbar  navbar-toggleable-md navbar-light bg-inverse navbar-inverse sticky-top">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation"
+            aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-md-center " id="navigation">
+        <ul class="navbar-nav">
+            <li class="nav-item "><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item active"><a class="nav-link" href="features.html">Features</a></li>
+            <li class="nav-item"><a class="nav-link" href="documentation.html">Documentation</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="http://example.com" id="nav_examples"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Examples</a>
+                <div class="dropdown-menu" aria-labelledby="nav_examples">
+                    <a class="dropdown-item tooltip_init" href="dataprospector.html" data-toggle="tooltip"
+                       title="Initializing from two array - object">Example 1</a>
+                    <a class="dropdown-item tooltip_init" href="dataprospector2.html" data-toggle="tooltip"
+                       title="Initializing from two array - array">Example 2</a>
+                    <a class="dropdown-item tooltip_init" href="dataprospector3.html" data-toggle="tooltip"
+                       title="Initializing from existing table">Example 3</a>
+                    <a class="dropdown-item tooltip_init" href="dataprospector4.html" data-toggle="tooltip"
+                       title="Selection and download">Example 4</a>
+                    <a class="dropdown-item tooltip_init" href="dataprospector5.html" data-toggle="tooltip"
+                       title="Init from file open">Example 5</a>
+                    <a class="dropdown-item tooltip_init" href="dataprospector6.html" data-toggle="tooltip"
+                       title="Init from array - array and advanced filters">Example 6</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+
+    <div class="row">
+        <div class="col-12">
+            <h2>Features</h2>
+        </div>
+
+        <div class="row col-12">
+            <a data-toggle="collapse" href="#easyToUse"><h4>Easy to use</h4></a>
+            <div class="w-100 mb-5">
+                You can display your data, on the fly. Data can be ordered by any of the columns (listed, or
+                filter
+                enabled columns)
+                <div class="panel-collapse collapse " id="easyToUse">
+                    <div class="paragraph-step">
+                        <h4>Try it yourself</h4>
+                        <div id="example_dataprospector1" class="w-100 example_table"></div>
+                        <input type="button" value="Fill the dataprospector" onclick="example1();"
+                               id="example_dataprospector1_creator"/>
+                    </div>
+                    <script type="text/javascript">
+                        var example_table1;
+
+                        function example1() {
+                            example_table1 = new Dataprospector($('#example_dataprospector1'), {
+                                data: cpu_items,
+                                header_shown: ['name', 'price', 'cores', 'freq', 'family'],
+                                advanced_filters: [{name: "price / cores", formula: "price/cores", unit: "Ft / Db"}],
+                                selection: true,
+                                context_menu: true,
+                                context_menu_download: true,
+                                filters_opened: true
+                            });
+                            $("#example_dataprospector1_creator").prop("disabled", true);
+
+                            return false;
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <a data-toggle="collapse" href="#easyToApply"><h4>Easy to apply</h4></a>
+            <div class="w-100 mb-5">
+                Can be used with 14 line of code, mostly the includes, 1 html, and 1 javascript of init
+                <div class="panel-collapse collapse " id="easyToApply">
+                    <div class="paragraph-step">
+                        Include the required javascripts and CSSs.
+                        <code>...
+                            <div class="tab1">&lt;head&gt;</div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript'
+                                src="js/jquery-1.9.1.0.min.js"&gt;&lt;/script&gt;
+                            </div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript'
+                                src="js/bootstrap.js"&gt;&lt;/script&gt;
+                            </div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript' src="js/bootstrap-slider.js"&gt;&lt;/script&gt;</div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript'
+                                src="js/bootstrap-multiselect.js"&gt;&lt;/script&gt;
+                            </div>
+                            <div class="tab1 dependency">&lt;script type='text/javascript' src="js/jquery.csv.js"&gt;&lt;/script&lt;</div>
+                            <div class="tab1">&lt;script type='text/javascript' src="js/bootstrap-dataprospector.js"&gt;&lt;/script&gt;</div>
+                            <div class="tab1 dependency">&lt;link href="css/bootstrap.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1 dependency">&lt;link href="css/bootstrap-slider.css"
+                                rel="stylesheet"&gt;
+                            </div>
+                            <div class="tab1 dependency">&lt;link href="css/bootstrap-multiselect.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1 dependency">&lt;link href="css/open-iconic-bootstrap.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1">&lt;link href="css/bootstrap-dataprospector.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1">&lt;/head&gt;</div>
+                            ... </code>
+                    </div>
+                    <div class="paragraph-step">
+                        This plugin depends on:
+                        <ul>
+                            <li>Jquery</li>
+                            <li>Bootstrap</li>
+                            <li>Bootstrap-slider</li>
+                            <li>Bootstrap-multiselect</li>
+                            <li>bootstrap-open-iconic</li>
+                            <li>Jquery.csv (only when importing csv files)</li>
+                        </ul>
+                    </div>
+                    <div class="paragraph-step">
+                        Setup the HTML element, where you want to use
+                        <code>...
+                            <div class="tab1">&lt;div class="panel-collapse collapse show"
+                                id="cpuPanel"&gt;&lt;/div&gt;
+                            </div>
+                            <div class="tab1">&lt;div class="panel-collapse collapse show"
+                                id="cpuPanel2"&gt;&lt;/div&gt;
+                            </div>
+                            ... </code>
+                    </div>
+                    <div class="paragraph-step">
+                        Initialise from javascript (cpu_items is an already filled javascript array of structure.)
+                        <code>...
+                            <div class="tab1">&lt;script type="application/javascript"&gt;</div>
+                            <div class="tab2">var cpu_dt2 =</div>
+                            <div class="tab2">
+                                $("#cpuPanel").dataprospector({data:cpu_items,header_shown:['domain','name','price']});
+                            </div>
+                            <div class="tab2">var cpu_dt = new Dataprospector($("#cpuPanel2"), {</div>
+                            <div class="tab3">data: cpu_items,</div>
+                            <div class="tab3">header_shown: ['domain', 'name', 'price']</div>
+                            <div class="tab2">});</div>
+                            <div class="tab1">&lt;/script&gt;</div>
+                            ... </code>
+                        It can be initialized, as jquery.dataprospector, or as new Dataprospector..
+                        The data will be cloned by default, so don't worry.
+                    </div>
+                    <div class="paragraph-step">
+                        Data can be the following sources:<br/>
+                        javascript: array of object<br/>
+                        javascript: array of array<br/>
+                        existing table<br/><br/>
+                        <h4>javascript array of object:</h4>
+                        Mostly JSON received data from the server trough restfull protocol.<br/>
+                        (array containing structures ([{},{}])) <br/>
+                        example:
+                        <code>
+                            <div class="tab1">var cpu_items = [{ "domain":"ipon.hu", "name":"AMD A4-4020 3.20GHz FM2
+                                BOX",...},{...},...]
+                            </div>
+                        </code>
+                        <h4>javascript array of array:</h4>
+                        mostly ajax, or headerless csv data, no column names<br/>
+                        (array containing array ([[],[]])) <br/>
+                        <code>
+                            <div class="tab1">var cpu_items_array= [
+                                [ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor",...],[...],...]
+                            </div>
+                        </code>
+                        existing table<br/>
+                        It can digest an existing html table, and use the data in it.<br/>
+                        It does not handles colspan and rowspan (I have a life you know...)<br/>
+                        <table id="import_from_table" class="table table-striped table-bordered data-item_list">
+                            <thead>
+                            <th>domain</th>
+                            <th>name</th>
+                            <th>price</th>
+                            <th>power</th>
+                            <th>cores</th>
+                            <th>freq</th>
+                            <th>slot</th>
+                            <th>family</th>
+                            <th>bench_name</th>
+                            <th>bench_score</th>
+                            <th>bench_match</th>
+                            <th>st_bench_name</th>
+                            <th>st_bench_score</th>
+                            <th>st_bench_match</th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>ipon.hu</td>
+                                <td>INTEL Core i5-3330S 2.70GHz 1155 OEM</td>
+                                <td>62690</td>
+                                <td>10</td>
+                                <td>4</td>
+                                <td>2700</td>
+                                <td> LGA-1155</td>
+                                <td> LGA-1155</td>
+                                <td>Intel Core i5 3330S</td>
+                                <td>5658</td>
+                                <td>21.0</td>
+                                <td>Intel Core i5 3330S</td>
+                                <td>1652</td>
+                                <td>21.0</td>
+                            </tr>
+                            <tr>
+                                <td>ipon.hu</td>
+                                <td>AMD FX-8320 3.50GHz AM3+ BOX</td>
+                                <td>30590</td>
+                                <td>10</td>
+                                <td>8</td>
+                                <td>3500</td>
+                                <td> Socket-AM3+</td>
+                                <td> Socket-AM3+</td>
+                                <td>AMD FX 8350</td>
+                                <td>8948</td>
+                                <td>17.0</td>
+                                <td>AMD FX 8350</td>
+                                <td>1508</td>
+                                <td>17.0</td>
+                            </tr>
+                            <tr>
+                                <td>ipon.hu</td>
+                                <td>INTEL Celeron G3930 2.90GHz 1151 BOX</td>
+                                <td>11490</td>
+                                <td>10</td>
+                                <td>2</td>
+                                <td>2900</td>
+                                <td> LGA-1151 (100, 200)</td>
+                                <td> LGA-1151 (100, 200)</td>
+                                <td>Intel Celeron G3920</td>
+                                <td>3412</td>
+                                <td>25.0</td>
+                                <td>Intel Celeron G3920</td>
+                                <td>1757</td>
+                                <td>25.0</td>
+                            </tr>
+                            <tr>
+                                <td>ipon.hu</td>
+                                <td>INTEL Celeron G3900 2.80GHz 1151 BOX</td>
+                                <td>11190</td>
+                                <td>10</td>
+                                <td>2</td>
+                                <td>2800</td>
+                                <td> LGA-1151 (100, 200)</td>
+                                <td> LGA-1151 (100, 200)</td>
+                                <td>Intel Celeron G3920</td>
+                                <td>3412</td>
+                                <td>25.0</td>
+                                <td>Intel Celeron 2.80GHz</td>
+                                <td>600</td>
+                                <td>23.0</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <input type="button" value="Convert this HTML table" onclick="convertHtmlTable()"/>
+                        <script type="text/javascript">
+                            function convertHtmlTable() {
+                                $("#import_from_table").dataprospector();
+                            }
+                        </script>
+                    </div>
+                    <div class="paragraph-step">
+                        <h4>Loading an existing file by the user:</h4>
+                        <input type="file" id="file_input_example" name="something" accept="text/csv,text/json"/>
+                        <label>Load a previously exported csv or json (file will not leave your computer)</label>
+                        <code>
+                            <div class="tab1">&lt;script type='text/javascript'&gt;</div>
+                            <div class="tab2">var file_example;</div>
+                            <div class="tab2">$("#file_input_example").on("change", function () {</div>
+                            <div class="tab3">file_example = new Dataprospector($("#file_input_example"), {</div>
+                            <div class="tab4">context_menu: true,</div>
+                            <div class="tab4">context_menu_download: true</div>
+                            <div class="tab3">});</div>
+                            <div class="tab2">});</div>
+                            <div class="tab1">&lt;/script&gt;</div>
+                        </code>
+
+
+                        <script type="application/javascript">
+                            var file_example;
+                            $("#file_input_example").on("change", function () {
+                                file_example = new Dataprospector($("#file_input_example"), {
+                                    context_menu: true,
+                                    context_menu_download: true
+                                });
+                            });
+                        </script>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <a data-toggle="collapse" href="#easyToFilterOut"><h4>Easy to filter out data</h4></a>
+            <div class="w-100 mb-5">
+                Easy to use filters to handle the data. Self recognises the column types:
+                <div class="panel-collapse collapse " id="easyToFilterOut">
+
+                    <h5 class="feature">Number: Any number -> slider (Minimum, Maximum)</h5>
+                    <div class="example_input">
+                        <div class="row w-100">
+                            <div class="w-100 mr-2">
+                                <div class="label label_price">price<span
+                                        class="lh-half oi  oi-arrow-circle-top"
+                                        data-sort-by="price"
+                                        data-sort-reverse="false"
+                                        data-vivaldi-spatnav-clickable="1"></span><span
+                                        class="lh-half oi  oi-arrow-circle-bottom" data-sort-by="price"
+                                        data-sort-reverse="true" data-vivaldi-spatnav-clickable="1"></span>
+                                </div>
+                                <div class="filter_element input-group filter_range">
+                                    <div class="d-block w-100">
+                                        <div class="slider slider-horizontal" id="filter_880fa4al_price">
+                                            <div class="slider-track">
+                                                <div class="slider-track-low"
+                                                     style="left: 0px; width: 0%;"></div>
+                                                <div class="slider-selection"
+                                                     style="left: 0%; width: 100%;"></div>
+                                                <div class="slider-track-high"
+                                                     style="right: 0px; width: 0%;"></div>
+                                            </div>
+                                            <div class="tooltip tooltip-main top" role="presentation"
+                                                 style="left: 50%;">
+                                                <div class="tooltip-arrow"></div>
+                                                <div class="tooltip-inner">0 : 570790</div>
+                                            </div>
+                                            <div class="tooltip tooltip-min top" role="presentation"
+                                                 style="left: 0%; display: none;">
+                                                <div class="tooltip-arrow"></div>
+                                                <div class="tooltip-inner">0</div>
+                                            </div>
+                                            <div class="tooltip tooltip-max top" role="presentation"
+                                                 style="left: 100%; display: none;">
+                                                <div class="tooltip-arrow"></div>
+                                                <div class="tooltip-inner">570790</div>
+                                            </div>
+                                            <div class="slider-handle min-slider-handle round" role="slider"
+                                                 aria-valuemin="0" aria-valuemax="570790" aria-valuenow="0"
+                                                 tabindex="0" style="left: 0%;"></div>
+                                            <div class="slider-handle max-slider-handle round" role="slider"
+                                                 aria-valuemin="0" aria-valuemax="570790" aria-valuenow="570790"
+                                                 tabindex="0" style="left: 100%;"></div>
+                                        </div>
+                                        <input data-slider-id="filter_880fa4al_price" type="text"
+                                               data-slider-min="0" data-slider-max="570790"
+                                               data-slider-value="[0,570790]" value="0,570790"
+                                               data-value="0,570790"
+                                               style="display: none;"></div>
+                                    <div class="w-100 d-block pr-3">
+                                        <div class="text-left w-50 float-left">0</div>
+                                        <div class="text-right w-50 float-right">570,790</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="feature">Enum: List of possible options: Dropdown (select + options, multiselect
+                        ANY)</h5>
+                    <div class="example_input">
+                        <div class="row w-100">
+                            <div class="w-100 mr-2">
+                                <div class="label label_slot">slot<span class="lh-half oi  oi-arrow-circle-top"
+                                                                        data-sort-by="slot"
+                                                                        data-sort-reverse="false"
+                                                                        data-vivaldi-spatnav-clickable="1"></span><span
+                                        class="lh-half oi  oi-arrow-circle-bottom" data-sort-by="slot"
+                                        data-sort-reverse="true" data-vivaldi-spatnav-clickable="1"></span>
+                                </div>
+                                <div class="filter_element input-group filter_options"><span
+                                        class="multiselect-native-select"><select name="filter_dkmw8d95_slot"
+                                                                                  multiple="">
+                                    <option value="AMD AM3">AMD AM3</option>
+                                    <option value="AMD AM3+">AMD AM3+</option>
+                                    <option value="AMD AM4">AMD AM4</option>
+                                    <option value="AMD FM1">AMD FM1</option>
+                                    <option value="AMD FM2">AMD FM2</option>
+                                    <option value="AMD FM2+">AMD FM2+</option>
+                                    <option value="AMD TR4">AMD TR4</option>
+                                    <option value="Intel 1150">Intel 1150</option>
+                                    <option value="Intel 1151">Intel 1151</option>
+                                    <option value="Intel 1151 v2">Intel 1151 v2</option>
+                                    <option value="Intel 2011-v3">Intel 2011-v3</option>
+                                    <option value="Intel 2066">Intel 2066</option>
+                                    <option value="&nbsp;LGA-1150">&nbsp;LGA-1150</option>
+                                    <option value="&nbsp;LGA-1151 (100, 200)">&nbsp;LGA-1151 (100, 200)</option>
+                                    <option value="&nbsp;LGA-1151 (300)">&nbsp;LGA-1151 (300)</option>
+                                    <option value="&nbsp;LGA-1155">&nbsp;LGA-1155</option>
+                                    <option value="&nbsp;LGA-2011-3">&nbsp;LGA-2011-3</option>
+                                    <option value="&nbsp;LGA-2066">&nbsp;LGA-2066</option>
+                                    <option value="&nbsp;Socket-AM1">&nbsp;Socket-AM1</option>
+                                    <option value="&nbsp;Socket-AM3+">&nbsp;Socket-AM3+</option>
+                                    <option value="&nbsp;Socket-AM4">&nbsp;Socket-AM4</option>
+                                    <option value="&nbsp;Socket-FM1">&nbsp;Socket-FM1</option>
+                                    <option value="&nbsp;Socket-FM2">&nbsp;Socket-FM2</option>
+                                    <option value="&nbsp;Socket-FM2+">&nbsp;Socket-FM2+</option>
+                                    <option value="&nbsp;Socket-TR4">&nbsp;Socket-TR4</option>
+                                </select><div class="btn-group">
+                                    <button type="button" class="multiselect dropdown-toggle btn btn-default"
+                                            data-toggle="dropdown" title="None selected"
+                                            aria-expanded="false"><span
+                                            class="multiselect-selected-text">None selected</span> <b
+                                            class="caret"></b></button>
+                                    <ul class="multiselect-container dropdown-menu"
+                                        data-vivaldi-spatnav-clickable="1"
+                                        style="max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                                        <li class="multiselect-item multiselect-filter" value="0"
+                                            data-vivaldi-spatnav-clickable="1">
+                                            <div class="input-group"><span class="input-group-addon"><i
+                                                    class="glyphicon glyphicon-search"></i></span><input
+                                                    class="form-control multiselect-search" type="text"
+                                                    placeholder="Search"><span class="input-group-btn"
+                                                                               data-vivaldi-spatnav-clickable="1"><button
+                                                    class="btn btn-default multiselect-clear-filter"
+                                                    type="button">
+                                                <i class="glyphicon glyphicon-remove-circle"></i>
+                                            </button></span>
+                                            </div>
+                                        </li>
+                                        <li class="multiselect-item multiselect-all"><a tabindex="0"
+                                                                                        class="multiselect-all"><label
+                                                class="checkbox"><input type="checkbox" value="multiselect-all">
+                                            Select all</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="AMD AM3"> AMD
+                                                                                                            AM3</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="AMD AM3+"> AMD
+                                                                                                             AM3+</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="AMD AM4"> AMD
+                                                                                                            AM4</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="AMD FM1"> AMD
+                                                                                                            FM1</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="AMD FM2"> AMD
+                                                                                                            FM2</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="AMD FM2+"> AMD
+                                                                                                             FM2+</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="AMD TR4"> AMD
+                                                                                                            TR4</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="Intel 1150">
+                                            Intel
+                                            1150</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="Intel 1151">
+                                            Intel
+                                            1151</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="Intel 1151 v2">
+                                            Intel 1151 v2</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="Intel 2011-v3">
+                                            Intel 2011-v3</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="Intel 2066">
+                                            Intel
+                                            2066</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;LGA-1150">
+                                            &nbsp;LGA-1150</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;LGA-1151 (100, 200)">
+                                            &nbsp;LGA-1151 (100, 200)</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;LGA-1151 (300)">
+                                            &nbsp;LGA-1151 (300)</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;LGA-1155">
+                                            &nbsp;LGA-1155</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;LGA-2011-3">
+                                            &nbsp;LGA-2011-3</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;LGA-2066">
+                                            &nbsp;LGA-2066</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;Socket-AM1">
+                                            &nbsp;Socket-AM1</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;Socket-AM3+">
+                                            &nbsp;Socket-AM3+</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;Socket-AM4">
+                                            &nbsp;Socket-AM4</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;Socket-FM1">
+                                            &nbsp;Socket-FM1</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;Socket-FM2">
+                                            &nbsp;Socket-FM2</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;Socket-FM2+">
+                                            &nbsp;Socket-FM2+</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="&nbsp;Socket-TR4">
+                                            &nbsp;Socket-TR4</label></a></li>
+                                    </ul>
+                                </div></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="feature">Text: Was not able to categorise, light text filtering (word by
+                        word)</h5>
+                    <div class="example_input">
+                        <div class="row w-100">
+                            <div class="w-100 mr-2">
+                                <div class="label label_name">name<span
+                                        class="lh-half oi io-grey  oi-arrow-circle-top" data-sort-by="name"
+                                        data-sort-reverse="false"
+                                        data-vivaldi-spatnav-clickable="1"></span><span
+                                        class="lh-half oi  oi-arrow-circle-bottom" data-sort-by="name"
+                                        data-sort-reverse="true" data-vivaldi-spatnav-clickable="1"></span>
+                                </div>
+                                <div class="filter_element input-group filter_string"><input type="text"
+                                                                                             class="form-control"
+                                                                                             aria-describedby="basic-addon1"
+                                                                                             name="name"><span
+                                        class="input-group-addon oi oi-magnifying-glass"
+                                        id="basic-addon1"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="feature">Array number: list of numbers, delimited by coma (,) -> slider (Minimum,
+                        Maximum)</h5>
+                    <div class="example_input">
+                        <div class="row w-100">
+                            <div class="w-100 mr-2">
+                                <div class="label label_mem_speed">mem_speed<span
+                                        class="lh-half oi  oi-arrow-circle-top" data-sort-by="mem_speed"
+                                        data-sort-reverse="false"></span><span
+                                        class="lh-half oi  oi-arrow-circle-bottom" data-sort-by="mem_speed"
+                                        data-sort-reverse="true"></span></div>
+                                <div class="filter_element input-group filter_array_slider">
+                                    <div class="d-block w-100">
+                                        <div class="slider slider-horizontal" id="filter_ozfdsj0k_mem_speed">
+                                            <div class="slider-track">
+                                                <div class="slider-track-low"
+                                                     style="left: 0px; width: 0%;"></div>
+                                                <div class="slider-selection"
+                                                     style="left: 0%; width: 100%;"></div>
+                                                <div class="slider-track-high"
+                                                     style="right: 0px; width: 0%;"></div>
+                                            </div>
+                                            <div class="tooltip tooltip-main top" role="presentation"
+                                                 style="left: 50%;">
+                                                <div class="tooltip-arrow"></div>
+                                                <div class="tooltip-inner">0 : 4500</div>
+                                            </div>
+                                            <div class="tooltip tooltip-min top" role="presentation"
+                                                 style="left: 0%; display: none;">
+                                                <div class="tooltip-arrow"></div>
+                                                <div class="tooltip-inner">0</div>
+                                            </div>
+                                            <div class="tooltip tooltip-max top" role="presentation"
+                                                 style="left: 100%; display: none;">
+                                                <div class="tooltip-arrow"></div>
+                                                <div class="tooltip-inner">4500</div>
+                                            </div>
+                                            <div class="slider-handle min-slider-handle round" role="slider"
+                                                 aria-valuemin="0" aria-valuemax="4500" aria-valuenow="0"
+                                                 tabindex="0" style="left: 0%;"></div>
+                                            <div class="slider-handle max-slider-handle round" role="slider"
+                                                 aria-valuemin="0" aria-valuemax="4500" aria-valuenow="4500"
+                                                 tabindex="0" style="left: 100%;"></div>
+                                        </div>
+                                        <input data-slider-id="filter_ozfdsj0k_mem_speed" type="text"
+                                               data-slider-min="0" data-slider-max="4500"
+                                               data-slider-value="[0,4500]" value="0,4500" data-value="0,4500"
+                                               style="display: none;"></div>
+                                    <div class="w-100 d-block pr-3">
+                                        <div class="text-left w-50 float-left">0</div>
+                                        <div class="text-right w-50 float-right">4,500</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h5 class="feature">Array text: list of text, delimited by coma (,) -> Dropdown (select +
+                        options)</h5>
+                    <div class="example_input">
+                        <div class="row w-100">
+                            <div class="w-100 mr-2">
+                                <div class="label label_mem_speed">mem_speed<span
+                                        class="lh-half oi  oi-arrow-circle-top" data-sort-by="mem_speed"
+                                        data-sort-reverse="false"></span><span
+                                        class="lh-half oi  oi-arrow-circle-bottom" data-sort-by="mem_speed"
+                                        data-sort-reverse="true"></span></div>
+                                <div class="filter_element input-group filter_array_string"><span
+                                        class="multiselect-native-select"><select
+                                        name="filter_kdmo20j4_mem_speed"
+                                        multiple="">
+                                    <option value=""></option>
+                                    <option value="1066">1066</option>
+                                    <option value="1333">1333</option>
+                                    <option value="1600">1600</option>
+                                    <option value="1866">1866</option>
+                                    <option value="2133">2133</option>
+                                    <option value="2200">2200</option>
+                                    <option value="2400">2400</option>
+                                    <option value="2600">2600</option>
+                                    <option value="266">266</option>
+                                    <option value="2666">2666</option>
+                                    <option value="2667">2667</option>
+                                    <option value="2750">2750</option>
+                                    <option value="2800">2800</option>
+                                    <option value="2933">2933</option>
+                                    <option value="3000">3000</option>
+                                    <option value="3066">3066</option>
+                                    <option value="3110">3110</option>
+                                    <option value="3200">3200</option>
+                                    <option value="3300">3300</option>
+                                    <option value="333">333</option>
+                                    <option value="3333">3333</option>
+                                    <option value="3400">3400</option>
+                                    <option value="3466">3466</option>
+                                    <option value="3500">3500</option>
+                                    <option value="3600">3600</option>
+                                    <option value="3666">3666</option>
+                                    <option value="3733">3733</option>
+                                    <option value="3800">3800</option>
+                                    <option value="3866">3866</option>
+                                    <option value="400">400</option>
+                                    <option value="4000">4000</option>
+                                    <option value="4133">4133</option>
+                                    <option value="4200">4200</option>
+                                    <option value="4266">4266</option>
+                                    <option value="4333">4333</option>
+                                    <option value="4400">4400</option>
+                                    <option value="4500">4500</option>
+                                    <option value="800">800</option>
+                                </select><div class="btn-group">
+                                    <button type="button" class="multiselect dropdown-toggle btn btn-default"
+                                            data-toggle="dropdown" title="None selected"
+                                            aria-expanded="false"><span
+                                            class="multiselect-selected-text">None selected</span> <b
+                                            class="caret"></b></button>
+                                    <ul class="multiselect-container dropdown-menu"
+                                        style="max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                                        <li class="multiselect-item multiselect-filter" value="0">
+                                            <div class="input-group"><span class="input-group-addon"><i
+                                                    class="glyphicon glyphicon-search"></i></span><input
+                                                    class="form-control multiselect-search" type="text"
+                                                    placeholder="Search"><span class="input-group-btn"><button
+                                                    class="btn btn-default multiselect-clear-filter"
+                                                    type="button">
+                                                <i class="glyphicon glyphicon-remove-circle"></i>
+                                            </button></span>
+                                            </div>
+                                        </li>
+                                        <li class="multiselect-item multiselect-all"><a tabindex="0"
+                                                                                        class="multiselect-all"><label
+                                                class="checkbox"><input type="checkbox" value="multiselect-all">
+                                            Select all</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="">
+                                        </label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="1066">
+                                            1066</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="1333">
+                                            1333</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="1600">
+                                            1600</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="1866">
+                                            1866</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2133">
+                                            2133</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2200">
+                                            2200</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2400">
+                                            2400</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2600">
+                                            2600</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="266">
+                                            266</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2666">
+                                            2666</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2667">
+                                            2667</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2750">
+                                            2750</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2800">
+                                            2800</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="2933">
+                                            2933</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3000">
+                                            3000</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3066">
+                                            3066</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3110">
+                                            3110</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3200">
+                                            3200</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3300">
+                                            3300</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="333">
+                                            333</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3333">
+                                            3333</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3400">
+                                            3400</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3466">
+                                            3466</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3500">
+                                            3500</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3600">
+                                            3600</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3666">
+                                            3666</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3733">
+                                            3733</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3800">
+                                            3800</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="3866">
+                                            3866</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="400">
+                                            400</label></a>
+                                        </li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="4000">
+                                            4000</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="4133">
+                                            4133</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="4200">
+                                            4200</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="4266">
+                                            4266</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="4333">
+                                            4333</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="4400">
+                                            4400</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="4500">
+                                            4500</label></a></li>
+                                        <li><a tabindex="0"><label class="checkbox"><input type="checkbox"
+                                                                                           value="800">
+                                            800</label></a>
+                                        </li>
+                                    </ul>
+                                </div></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a data-toggle="collapse" href="#bandwidthFriendly"><h4>Bandwidth and ping friendly:</h4></a>
+            <div class="w-100 mb-5">
+                Data is one time delivered, and the processing done on client side
+                <div class="panel-collapse collapse " id="bandwidthFriendly">
+                    You send the data once, and the filtering happens in the browser.<br/>
+                    There are some cases, where it has more cons than pros, but it can be useful.
+                    <h5>When to use</h5>
+                    <ul>
+                        <li>You want to save on bandwidth</li>
+                        <li>You want to save on server cpu</li>
+                        <li>The users take long time with the data</li>
+                    </ul>
+                    <h5>When not to use</h5>
+                    <ul>
+                        <li>You have valuable data, and you are afraid, the users will steal it all</li>
+                        <li>You have a <strong>LOT OF</strong> data</li>
+                        <li>You want to acquire what the users done with your data</li>
+                    </ul>
+                </div>
+            </div>
+            <a data-toggle="collapse" href="#featureSelected"><h4>Selected option</h4></a>
+            <div class="w-100 mb-5">
+                Can select elements, and query them in javascript
+                <div class="panel-collapse collapse " id="featureSelected">
+                    <div class="paragraph-step">
+                        You can use this feature to get what elements the user selected. You can get a selected
+                        attribute, or a clone of your object.<br/>
+                        (dataprospector clones your data, so it will not be the original object, also it might have
+                        additional
+                        columns:<br/>
+                        <ul>
+                            <li>"selected":true *always</li>
+                            <li>"filtered_out":true :the current filters are set such, the current item is filtered
+                                out
+                            </li>
+                            <li>advanced_filters.name: any advanced filter name, you set up</li>
+                            </li></ul>
+                        If you modify the resulted object(s), it be changed in dataprospector too!<br/>
+                    </div>
+                    <div class="paragraph-step">
+                        <h4>Try it yourself</h4>
+                        <div id="example_dataprospector2" class="w-100 example_table"></div>
+                        <input type="button" value="Fill the dataprospector" onclick="example2();"
+                               id="example_dataprospector2_creator"/>
+                        <input type="button" value="Show what's selected" onclick="example2b();"/>
+                        <label>What attribute to display</label>
+                        <select id="example_selected">
+                            <option value="domain">domain</option>
+                            <option value="name" selected>name</option>
+                            <option value="price">price</option>
+                            <option value="power">power</option>
+                            <option value="cores">cores</option>
+                            <option value="freq">freq</option>
+                            <option value="slot">slot</option>
+                            <option value="family">family</option>
+                            <option value="bench_name">bench_name</option>
+                            <option value="bench_score">bench_score</option>
+                        </select><br/>
+                        listSelectedElements():
+                        <div class=" loong_row">
+                            <div class="example_table" id="selected_listing_a"></div>
+                        </div>
+                        listSelectedAttribute(attribute):
+                        <div class="loong_row">
+                            <div class="example_table" id="selected_listing_b"></div>
+                        </div>
+                        <script type="text/javascript">
+                            var example_table2;
+
+                            function example2() {
+                                example_table2 = new Dataprospector($('#example_dataprospector2'), {
+                                    data: cpu_items,
+                                    header_shown: ['name', 'price', 'cores', 'freq'],
+                                    items_per_page: 5,
+                                    selection: true
+                                });
+
+                                example_table2.options.filter_animation_time = 10;
+                                example_table2.toggleShowFilters(example_table2);
+                                setTimeout(function () {
+                                    example_table2.toggleShowFilters(example_table2);
+                                    example_table2.options.filter_animation_time = 1000;
+                                }, 10);
+                                $("#example_dataprospector2_creator").prop("disabled", true);
+                                return false;
+                            }
+
+                            function example2b() {
+                                var i, result;
+                                var elements = example_table2.listSelectedElements();
+                                console.log(elements);
+                                result = '';
+                                for (i = 0; i < elements.length; i++) {
+                                    result += JSON.stringify(elements[i]) + "<br/>";
+                                }
+                                $("#selected_listing_a").html(result);
+                                var elements = example_table2.listSelectedAttribute($("#example_selected").val());
+                                console.log(elements);
+                                result = '';
+                                for (i = 0; i < elements.length; i++) {
+                                    result += elements[i] + "<br/>";
+                                }
+                                $("#selected_listing_b").html(result);
+                                return false;
+                            }
+                        </script>
+                    </div>
+
+                </div>
+
+            </div>
+            <a data-toggle="collapse" href="#contextMenu"><h4>Context menu</h4></a>
+            <div class="w-100 mb-5">
+                You can save the selected items
+                <div class="panel-collapse collapse " id="contextMenu">
+                    <div class="paragraph-step">
+                        Context menu only can be enabled, when the depending selected option is also enabled.
+                        It will give the users the feature to right click on the data, and get a context menu.
+                        It will allow, to clear the filters, setup new external filter based on where the user clicked.
+                        This will create a new external filter, based on the column, and the exact value clicked.
+                        User can unselect all records, or select the filtered records.
+                        There are several different formats for "downloading".
+                    </div>
+                    <div class="paragraph-step">
+                        <h4>Try it yourself</h4>
+                        <div id="example_dataprospector8" class="w-100 example_table"></div>
+                        <input type="button" value="Fill the dataprospector" onclick="example8();"
+                               id="example_dataprospector8_creator"/>
+                        <input type="button" value="Show what's selected" onclick="example8b();"/>
+                        <label>What attribute to display</label>
+                        <select id="example_selected8">
+                            <option value="domain">domain</option>
+                            <option value="name" selected>name</option>
+                            <option value="price">price</option>
+                            <option value="power">power</option>
+                            <option value="cores">cores</option>
+                            <option value="freq">freq</option>
+                            <option value="slot">slot</option>
+                            <option value="family">family</option>
+                            <option value="bench_name">bench_name</option>
+                            <option value="bench_score">bench_score</option>
+                        </select><br/>
+                        listSelectedElements():
+                        <div class=" loong_row">
+                            <div class="example_table" id="selected_listing_a8"></div>
+                        </div>
+                        listSelectedAttribute(attribute):
+                        <div class="loong_row">
+                            <div class="example_table" id="selected_listing_b8"></div>
+                        </div>
+                        <script type="text/javascript">
+                            var example_table8;
+
+                            function example8() {
+                                example_table8 = new Dataprospector($('#example_dataprospector8'), {
+                                    data: cpu_items,
+                                    header_shown: ['name', 'price', 'cores', 'freq'],
+                                    items_per_page: 5,
+                                    selection: true,
+                                    context_menu: true,
+                                    context_menu_download: true
+                                });
+
+                                example_table8.options.filter_animation_time = 10;
+                                example_table8.toggleShowFilters(example_table8);
+                                setTimeout(function () {
+                                    example_table8.toggleShowFilters(example_table8);
+                                    example_table8.options.filter_animation_time = 1000;
+                                }, 10);
+                                $("#example_dataprospector8_creator").prop("disabled", true);
+                                return false;
+                            }
+
+                            function example8b() {
+                                var i, result;
+                                var elements = example_table8.listSelectedElements();
+                                console.log(elements);
+                                result = '';
+                                for (i = 0; i < elements.length; i++) {
+                                    result += JSON.stringify(elements[i]) + "<br/>";
+                                }
+                                $("#selected_listing_a8").html(result);
+                                var elements = example_table8.listSelectedAttribute($("#example_selected8").val());
+                                console.log(elements);
+                                result = '';
+                                for (i = 0; i < elements.length; i++) {
+                                    result += elements[i] + "<br/>";
+                                }
+                                $("#selected_listing_b8").html(result);
+                                return false;
+                            }
+                        </script>
+                    </div>
+
+                </div>
+
+            </div>
+            <a data-toggle="collapse" href="#localFile"><h4>Loading local file</h4></a>
+            <div class="w-100 mb-5">
+                You can use it to process local files easily
+                <div class="panel-collapse collapse " id="localFile">
+                    <div class="paragraph-step">
+                        You can load a local json, or csv file to find the valuable data you need.<br/>
+                        You create an input type="file" element, and set up a listener for a file selected.<br/>
+                        It will trigger the creation. It will remove the input element, and replace it with a div and the datacontents.<br/>
+                        The json should have to have one of the following format:<br/>
+                        array : array = [ ['e','r','t'],['s','d','f'],...]<br/>
+                        array : object = [ {name:'e',"tricky-name":'r',description:'t'},{name:'s',"tricky-name":'d',description:'f'}...]<br/>
+                        The csv (Coma separated values) has fulfill the following rules:
+                        <ul>
+                            <li>The separator should be , (coma)</li>
+                            <li>The first line is set up as headers</li>
+                            <li>tricky strings can be quoted ("like this")</li>
+                        </ul>
+
+
+                    </div>
+                    <div class="paragraph-step">
+                        <h4>Try it yourself</h4>
+                        <div class="paragraph-step">
+                            <h4>Loading an existing file by the user:</h4>
+                            <input type="file" id="file_input_example2" name="something" accept="text/csv,text/json"/>
+                            <label>Load a previously exported csv or json (file will not leave your computer)</label>
+                            <code>
+                                <div class="tab1">&lt;script type='text/javascript'&gt;</div>
+                                <div class="tab2">var file_example2;</div>
+                                <div class="tab2">$("#file_input_example2").on("change", function () {</div>
+                                <div class="tab3">file_example2 = new Dataprospector($("#file_input_example2"), {</div>
+                                <div class="tab4">context_menu: true,</div>
+                                <div class="tab4">context_menu_download: true</div>
+                                <div class="tab3">});</div>
+                                <div class="tab2">});</div>
+                                <div class="tab1">&lt;/script&gt;</div>
+                            </code>
+                            <script type="application/javascript">
+                                var file_example2;
+                                $("#file_input_example2").on("change", function () {
+                                    file_example2 = new Dataprospector($("#file_input_example2"), {
+                                        context_menu: true,
+                                        context_menu_download: true
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a data-toggle="collapse" href="#featureAdvancedFiltering"><h4>Advanced filtering</h4></a>
+            <div class="w-100 mb-5">
+                Easy to setup advanced new columns on depending on existing ones
+                <div class="panel-collapse collapse " id="featureAdvancedFiltering">
+                    You can setup custom filtering based on the existing numerical columns.<br/>
+                    The result will be new filtering, always slider type.
+                    <div class="paragraph-step">
+                        <h4>Try it yourself</h4>
+                        <div id="example_dataprospector6" class="w-100 example_table"></div>
+                        <input type="button" value="Fill the dataprospector" onclick="example6();"
+                               id="example_dataprospector6_creator"/>
+
+                        <script type="text/javascript">
+                            var example_table6;
+
+                            function example6() {
+                                example_table6 = new Dataprospector($('#example_dataprospector6'), {
+                                    data: cpu_items,
+                                    header_shown: ['name', 'price', 'cores', 'freq'],
+                                    filters: ['name', 'price', 'cores', 'freq'],
+                                    advanced_filters: [
+                                        {name: "price / power", formula: "price/power", unit: "Ft / W"},
+                                        {name: "price/score", formula: "price/bench_score", unit: "Ft/Sc"},
+                                        {
+                                            name: "price/freq*cores",
+                                            formula: "price/(freq*cores)",
+                                            unit: "Ft/MhzCore"
+                                        }
+                                    ],
+                                    items_per_page: 10,
+                                    selection: true
+                                });
+
+                                example_table6.options.filter_animation_time = 10;
+                                example_table6.toggleShowFilters(example_table6);
+                                setTimeout(function () {
+                                    example_table6.toggleShowFilters(example_table6);
+                                    example_table6.options.filter_animation_time = 1000;
+                                }, 10);
+                                $("#example_dataprospector6_creator").prop("disabled", true);
+                                return false;
+                            }
+                        </script>
+                    </div>
+                    <div class="paragraph-step">
+                        Initialise from javascript
+                        <code>...
+                            <div class="tab1">&lt;script type="application/javascript"&gt;</div>
+                            <div class="tab2"> var mb_dt2 =</div>
+                            <div class="tab2">
+                                $("#mbPanel").dataprospector({data:mb_items,header_shown:['domain','name','price']});
+                            </div>
+
+                            <div class="tab2">var mb_dt = new Dataprospector($("#mbPanel2"), {</div>
+                            <div class="tab3">data: mb_items,</div>
+                            <div class="tab3">header_shown: ['domain', 'name', 'price'],</div>
+                            <div class="tab3">advanced_filters: [</div>
+                            <div class="tab4">{name: "price / power", formula: "price/power", unit: "Ft / W"},</div>
+                            <div class="tab4">{name: "price/score",formula: "price/bench_score",unit: "Ft/Sc"},
+                            </div>
+                            <div class="tab4">{name: "price/freq*cores", formula: "price/(freq*cores)", unit:
+                                "Ft/MhzCore"}]
+                            </div>
+                            <div class="tab2">});</div>
+                            <div class="tab1"> &lt;/script&gt;</div>
+                            ... </code>
+                        Ether form is accessible, as jquery.databale, as new Dataprospector..
+                        The data will be cloned, so don't worry.
+                    </div>
+                    <div class="paragraph-step">
+                        It uses the following input:<br/>
+                        advanced_filters is an array ([]), not an object ({})<br/>
+                        <strong>name</strong><br/>
+                        This is what will be displayed in the advanced filter column, and when sorted by, no strict
+                        restrictions.<br/>
+                        <br/>
+                        <strong>formula</strong><br/>
+                        This is what gives the values. It has to be javascript compatible. If you are using other
+                        values,
+                        they have to declared, before the dataprospector init.
+                        These variables will be used only once. For performance dataprospector creates new columns for
+                        these
+                        values.
+                        (It's much cheaper to allocate memory in the browser, than to do a lot of processing on all
+                        the
+                        filtering :()
+                        If you are not using structured data input (Your data does not have names, it's an array),
+                        then
+                        you
+                        have to use column indexes.<br/>
+                        Using structured data (json)<br/>
+                        <code>
+                            <div class="tab1">var cpu_items = [{ "domain":"ipon.hu", "name":"AMD A4-4020 3.20GHz FM2
+                                BOX", "price":8490,
+                                "power":10, "cores":2, "freq":3200, ...
+                            </div>
+                            ...
+                            <div class="tab1">advanced_filters: [</div>
+                            <div class="tab2">{name: "price / power", formula: "price/power", unit: "Ft / W"},
+                            </div>
+                            <div class="tab2">...</div>
+                        </code>
+                        Using un-named data (array)<br/>
+                        <code>
+                            <div class="tab1">var cpu_items_array= [
+                                [ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor", 15656, 95, 4,
+                                3800, "AMD AM3+", "AMD
+                                FX", "AMD FX-4300", 4672, "0.0", "AMD FX-4300", 1410, "0.0"],...
+                            </div>
+                            ...
+                            <div class="tab1">advanced_filters: [</div>
+                            <div class="tab2">{name: "price / power", formula: "col_2_/col_3_", unit: "Ft / W"},</div>
+                            <div class="tab2">...</div>
+                        </code>
+                        You have to put col_ and an ending _ (underscore) after the column number<br/>
+                        col_2_ is the 3. column (you know, the sane programming languages are starting to count from 0)<br/>
+                        col_3_ is the 4. and col_10_ is the 11.<br/>
+
+                        <strong>unit</strong>
+                        The unit you want to display (next to the filter, and on the values)
+
+                        as in table item
+                        <div class="example_input">
+                            2,500 Mhz
+                        </div>
+                        and as in filter
+                        <div class="example_input">
+                            <div class="row w-100">
+                                <div class="w-100 mr-2">
+                                    <div class="label label_freq">freq<span class="lh-half oi  oi-arrow-circle-top"
+                                                                            data-sort-by="freq"
+                                                                            data-sort-reverse="false"></span><span
+                                            class="lh-half oi  oi-arrow-circle-bottom" data-sort-by="freq"
+                                            data-sort-reverse="true"></span></div>
+                                    <div class="filter_element input-group filter_range">
+                                        <div class="d-block w-100">
+                                            <div class="slider slider-horizontal" id="filter_4upa7mi1_freq">
+                                                <div class="slider-track">
+                                                    <div class="slider-track-low"
+                                                         style="left: 0px; width: 0%;"></div>
+                                                    <div class="slider-selection"
+                                                         style="left: 0%; width: 100%;"></div>
+                                                    <div class="slider-track-high"
+                                                         style="right: 0px; width: 0%;"></div>
+                                                </div>
+                                                <div class="tooltip tooltip-main top" role="presentation"
+                                                     style="left: 50%;">
+                                                    <div class="tooltip-arrow"></div>
+                                                    <div class="tooltip-inner">0 : 4300</div>
+                                                </div>
+                                                <div class="tooltip tooltip-min top" role="presentation"
+                                                     style="left: 0%; display: none;">
+                                                    <div class="tooltip-arrow"></div>
+                                                    <div class="tooltip-inner">0</div>
+                                                </div>
+                                                <div class="tooltip tooltip-max top" role="presentation"
+                                                     style="left: 100%; display: none;">
+                                                    <div class="tooltip-arrow"></div>
+                                                    <div class="tooltip-inner">4300</div>
+                                                </div>
+                                                <div class="slider-handle min-slider-handle round" role="slider"
+                                                     aria-valuemin="0" aria-valuemax="4300" aria-valuenow="0"
+                                                     tabindex="0"
+                                                     style="left: 0%;"></div>
+                                                <div class="slider-handle max-slider-handle round" role="slider"
+                                                     aria-valuemin="0" aria-valuemax="4300" aria-valuenow="4300"
+                                                     tabindex="0" style="left: 100%;"></div>
+                                            </div>
+                                            <input data-slider-id="filter_4upa7mi1_freq" type="text"
+                                                   data-slider-min="0"
+                                                   data-slider-max="4300" data-slider-value="[0,4300]"
+                                                   value="0,4300"
+                                                   data-value="0,4300" style="display: none;"></div>
+                                        <div class="w-100 d-block pr-3">
+                                            <div class="text-left w-50 float-left">0 Mhz</div>
+                                            <div class="text-right w-50 float-right">4,300 Mhz</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <a data-toggle="collapse" href="#featurePagination"><h4>Paginated</h4></a>
+            <div class="w-100 mb-5">
+                Pagination is used to browse trough much data, or when the items_per_page is set to very low.
+                <div class="panel-collapse collapse " id="featurePagination">
+                    <h4>Try it yourself</h4>
+                    <div id="example_dataprospector3" class="w-100 example_table"></div>
+                    <input type="button" value="Fill the dataprospector" onclick="example3();"
+                           id="example_dataprospector3_creator"/>
+
+                    <script type="text/javascript">
+                        var example_table3;
+
+                        function example3() {
+                            example_table3 = new Dataprospector($('#example_dataprospector3'), {
+                                data: cpu_items,
+                                header_shown: ['name', 'price', 'cores', 'freq'],
+                                items_per_page: 5
+                            });
+
+                            example_table3.options.filter_animation_time = 10;
+                            example_table3.toggleShowFilters(example_table3);
+                            setTimeout(function () {
+                                example_table3.toggleShowFilters(example_table3);
+                                example_table3.options.filter_animation_time = 1000;
+                            }, 10);
+                            $("#example_dataprospector3_creator").prop("disabled", true);
+                            return false;
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+        <a data-toggle="collapse" href="#featureExternalFiltering"><h4>External filtering</h4></a>
+        <div class="w-100 mb-5">
+            External (manual) filtering can be setup
+            <div class="panel-collapse collapse " id="featureExternalFiltering">
+                <div class="paragraph-step">
+                    You can filter on the fly with filtering options coming from other sources (other
+                    dataprospector)<br/>
+                    dataprospector will remember the set filter options, as long, as you are not overwriting them.<br/>
+                    Don't forget to set all the filtering options.<br/>
+                    If you want to turn it off, just set it to false<br/>
+                </div>
+                <div class="paragraph-step">
+                    <h4>Try it yourself</h4>
+                    <div id="example_dataprospector4" class="w-100 example_table"></div>
+                    <input type="button" value="Fill the dataprospector" onclick="example4();"
+                           id="example_dataprospector4_creator"/>
+                    <input type="button" value="Filter by price < 50 000" onclick="example4a();"/>
+                    <input type="button" value="Filter by freq > 3 500" onclick="example4b();"/>
+                    <input type="button" value="Filter by price < 50 000 AND freq > 3 500" onclick="example4c();"/>
+                    <input type="button" value="Reset the external filters" onclick="example4d();"/>
+
+                    <script type="text/javascript">
+                        var example_table4;
+
+                        function example4() {
+                            example_table4 = new Dataprospector($('#example_dataprospector4'), {
+                                data: cpu_items,
+                                header_shown: ['name', 'price', 'cores', 'freq'],
+                                items_per_page: 10
+                            });
+                            example_table4.options.filter_animation_time = 10;
+                            example_table4.toggleShowFilters(example_table4);
+                            setTimeout(function () {
+                                example_table4.toggleShowFilters(example_table4);
+                                example_table4.options.filter_animation_time = 1000;
+                            }, 10);
+
+                            $("#example_dataprospector4_creator").prop("disabled", true);
+                            return false;
+                        }
+
+                        function example4a() {
+                            example_table4.externalFilter(
+                                [{name: 'price', type: 'range', min: 0, max: 50000}]
+                            );
+                        }
+
+                        function example4b() {
+                            example_table4.externalFilter(
+                                [{name: 'freq', type: 'range', min: 3500, max: Infinity}]
+                            );
+                        }
+
+                        function example4c() {
+                            example_table4.externalFilter(
+                                [{name: 'price', type: 'range', min: 0, max: 50000},
+                                    {name: 'freq', type: 'range', min: 3500, max: Infinity}]
+                            );
+                        }
+
+                        function example4d() {
+                            example_table4.externalFilter(false);
+                        }
+                    </script>
+
+                </div>
+                <div class="paragraph-step">
+                    <code>
+                        <div class="tab1">var example_table4;</div>
+                        <div class="tab1">function example4() {</div>
+                        <div class="tab2">example_table4 = new Dataprospector($('#example_dataprospector4'), {</div>
+                        <div class="tab3">data: cpu_items,</div>
+                        <div class="tab3">header_shown: ['name', 'price', 'cores', 'freq'],</div>
+                        <div class="tab3">items_per_page: 10</div>
+                        <div class="tab2">});</div>
+                        <div class="tab2">example_table4.options.filter_animation_time = 10;</div>
+                        <div class="tab2">example_table4.toggleShowFilters(example_table4);</div>
+                        <div class="tab2">setTimeout(function() {</div>
+                        <div class="tab3">example_table4.toggleShowFilters(example_table4);</div>
+                        <div class="tab3">example_table4.options.filter_animation_time = 1000;</div>
+                        <div class="tab2">}, 10);</div>
+                        <div class="tab2">$("#example_dataprospector4_creator").prop("disabled", true);</div>
+                        <div class="tab2">return false;</div>
+                        <div class="tab1">}</div>
+                        <div class="tab1">&nbsp;</div>
+                        <div class="tab1 comment">// &nbsp;Filter by price < 50 000</div>
+                        <div class="tab1">function example4a() {</div>
+                        <div class="tab2">example_table4.externalFilter(</div>
+                        <div class="tab3">[{name: 'price', type: 'range', min: 0, max: 50000}]</div>
+                        <div class="tab2">);</div>
+                        <div class="tab1">}</div>
+                        <div class="tab1">&nbsp;</div>
+                        <div class="tab1 comment">// &nbsp;Filter by freq > 3 500</div>
+                        <div class="tab1">function example4b() {</div>
+                        <div class="tab2">example_table4.externalFilter(</div>
+                        <div class="tab3">[{name: 'freq', type: 'range', min: 3500, max: Infinity}]</div>
+                        <div class="tab2">);</div>
+                        <div class="tab1">}</div>
+                        <div class="tab1">&nbsp;</div>
+                        <div class="tab1 comment">// Filter by price < 50 000 AND freq > 3 500</div>
+                        <div class="tab1">function example4c() {</div>
+                        <div class="tab2">example_table4.externalFilter(</div>
+                        <div class="tab3">[{name: 'price', type: 'range', min: 0, max: 50000},</div>
+                        <div class="tab3">{name: 'freq', type: 'range', min: 3500, max: Infinity}]</div>
+                        <div class="tab2">);</div>
+                        <div class="tab1">}</div>
+                        <div class="tab1">&nbsp;</div>
+                        <div class="tab1 comment">// Reset the external filters</div>
+                        <div class="tab1">function example4d() {</div>
+                        <div class="tab2">example_table4.externalFilter(false);</div>
+                        <div class="tab1">}</div>
+                    </code>
+                </div>
+                <div class="paragraph-step">
+                    How to use it:<br/>
+                    Advanced Filter can setup at init, as parameter, or used the .externalFilter function to set
+                    it.<br/>
+                    <strong>name</strong><br/>
+                    Name of the column you want to filter. If it's a structure-less (array) data source, you have to
+                    use
+                    the
+                    index number starting from 0<br/>
+                    <strong>type</strong><br/>
+                    Can be one of the following. The other used parameters are depending on the type.
+                    <ul>
+                        <li>range - Will filter a range (min,max), will use the slider's filter function
+                            <ul>
+                                <li>min (number,included)</li>
+                                <li>max (number,included)</li>
+                            </ul>
+                        </li>
+                        <li>string - Will filter with a string, will use the string filter's function
+                            <ul>
+                                <li>string (string, word-by-word match)</li>
+                            </ul>
+                        </li>
+                        <li>array_range - Value is a list of integers ("3600, 4000, 2666, 2133, 2400") (Will filter
+                            on
+                            the
+                            numbers, if any is in the range, it will not filter it out)
+                            <ul>
+                                <li>min (number,included)</li>
+                                <li>max (number,included)</li>
+                            </ul>
+                        </li>
+                        <li>array_string - Will filter for any match - same as (options)
+                            <ul>
+                                <li>enums (Array of strings)</li>
+                            </ul>
+                        </li>
+                        <li>enum - Will filter for any match - same as array_string
+                            <ul>
+                                <li>enums (Array of strings)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="paragraph-step">
+                    <h4>Try it yourself</h4>
+                    <div id="example_dataprospector5" class="w-100 example_table"></div>
+                    <input type="button" value="Fill the dataprospector" onclick="example5();"
+                           id="example_dataprospector5_creator"/>
+
+                    <script type="text/javascript">
+                        var example_table5;
+
+                        function example5() {
+                            example_table5 = new Dataprospector($('#example_dataprospector5'), {
+                                data: mb_items,
+                                header_shown: ['name', 'price', 'cpu_slot', 'mem_type'],
+                                items_per_page: 10
+                            });
+                            example_table5.options.filter_animation_time = 10;
+                            example_table5.toggleShowFilters(example_table5);
+                            setTimeout(function () {
+                                example_table5.toggleShowFilters(example_table5);
+                                example_table5.options.filter_animation_time = 1000;
+                            }, 10);
+
+                            $("#example_dataprospector5_creator").prop("disabled", true);
+                            return false;
+                        }
+
+                        function example5a() {
+                            example_table5.externalFilter(
+                                [{name: 'price', type: 'range', min: 5000, max: 15000}]
+                            );
+                        }
+
+                        function example5b() {
+                            example_table5.externalFilter(
+                                [{name: 'name', type: 'string', string: "prime"}]
+                            );
+                        }
+
+                        function example5c() {
+                            example_table5.externalFilter(
+                                [{name: 'mem_speed', type: 'array_range', min: 3500, max: Infinity}]
+                            );
+                        }
+
+                        function example5d() {
+                            example_table5.externalFilter(
+                                [{name: 'cpu_slot', type: 'array_string', enums: ["Socket-FM2+", "Socket-AM4"]}]
+                            );
+                        }
+
+                        function example5e() {
+                            example_table5.externalFilter(false);
+                        }
+                    </script>
+                    <br/>
+                    <input type="button" value="Filter by 15 000 > price > 5 000" onclick="example5a();"/>
+                    <code>
+                        <div class="tab1">example_table5.externalFilter(</div>
+                        <div class="tab2">[{name: 'price', type: 'range', min: 5000, max: 15000}]</div>
+                        <div class="tab1">);</div>
+                    </code>
+                    <input type="button" value="Filter name has prime" onclick="example5b();"/>
+                    <code>
+                        <div class="tab1">example_table5.externalFilter(</div>
+                        <div class="tab2">[{name: 'name', type: 'string', string:"prime"}]</div>
+                        <div class="tab1">);</div>
+                    </code>
+                    <input type="button" value="Filter by 3 500 > mem_speed > Infinity" onclick="example5c();"/>
+                    <code>
+                        <div class="tab1">example_table5.externalFilter(</div>
+                        <div class="tab2">[{name: 'mem_speed', type: 'array_range', min: 3500, max: Infinity}]</div>
+                        <div class="tab1">);</div>
+                    </code>
+                    <input type="button" value='Filter cpu_slot by ["Socket-FM2+","Socket-AM4"]'
+                           onclick="example5d();"/>
+                    <code>
+                        <div class="tab1">example_table5.externalFilter(</div>
+                        <div class="tab2">[{name: 'cpu_slot', type: 'array_string',
+                            enums:["Socket-FM2+","Socket-AM4"]}]
+                        </div>
+                        <div class="tab1">);</div>
+                    </code>
+                    <input type="button" value="Reset the external filters" onclick="example5e();"/>
+                    <code>example_table5.externalFilter(false);
+                    </code>
+
+
+                </div>
+            </div>
+        </div>
+
+</body>
+</html>
