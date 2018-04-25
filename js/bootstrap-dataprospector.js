@@ -137,6 +137,12 @@ function Dataprospector(select, options) {
         };
         return;
     }
+    if(this.options.selection) {
+        var i;
+        for (i = 0; i < this.options.data.length; i++) {
+            this.options.data[i]['selected'] = false;
+        }
+    }
     this.renderHTML();
 }
 
@@ -183,10 +189,10 @@ Dataprospector.prototype = {
         clone_data: true, // will create a duplicate from the data object,
                           // setting it false will result in smaller memory usage,
                           // but it will modify your original data array!
-        headers: [], // list of headers (String[]) // todo find out what this doing!
+        headers: [], // list of headers (String[]) // internal use
         header_names: [],
         header_types: {}, // list of header types (header_types['name']['string']
-                          // string, range, array_string, array_slider
+                          // string, range, array_string, array_slider, boolean
         filters: [],      // what filters should be rendered
         external_filters: false, // external filters (can be setup trough functions and context menu)
         advanced_filters: false, // what advanced filters should be rendered
@@ -566,15 +572,24 @@ Dataprospector.prototype = {
         var i;
         // if headers_shown is not set, show all be default
         if (!this.options.header_shown || this.options.header_shown.length == 0) {
-            this.options.header_shown = this.options.headers;
+            if(this.options.selection){
+                this.options.header_shown = [];
+                this.options.header_shown.push('selected');
+                this.options.header_shown.push(this.options.headers);
+            } else {
+                this.options.header_shown = this.options.headers;
+            }
         }
         var sorted_header_found = false;
         for (i = 0; i < this.options.header_shown.length; i++) {
             if (this.options.sort_by == this.options.header_shown[i])
                 sorted_header_found = true;
         }
+
         // the last will be the sorted header, if not already shown
         this.tmp_header_shown = [];
+        if(!sorted_header_found && this.options.selection && this.options.sort_by == 'selected')
+            sorted_header_found = true;
         for (i = 0; i < this.options.header_shown.length; i++)
             this.tmp_header_shown.push(this.options.header_shown[i]);
         if (!sorted_header_found && this.options.sort_by) {
@@ -634,7 +649,7 @@ Dataprospector.prototype = {
                 $sort_up = $(this.options.templates.header_column_sort.replace("%sortSelected%", ''));
             }
             // $sort_up.attr("data-sort-by", this.tmp_header_shown[i]);
-            var sort_by = header_name;
+            var sort_by = this.tmp_header_shown[i];
             var minime = this;
             $sort_up.attr("data-sort-by", sort_by);
             $sort_up.attr("data-sort-reverse", "true");
@@ -691,6 +706,18 @@ Dataprospector.prototype = {
                     return (a[minime.options.sort_by].toLowerCase()).localeCompare(b[minime.options.sort_by].toLowerCase());
                 });
             }
+        }
+        if(type == 'boolean'){
+            if (this.options.sort_reverse) {
+                this.options.data.sort(function (a, b) {
+                    return (b[minime.options.sort_by] === a[minime.options.sort_by]) ? 0 : (b[minime.options.sort_by])? -1 : 1;
+                });
+            } else {
+                this.options.data.sort(function (a, b) {
+                    return (a[minime.options.sort_by] === b[minime.options.sort_by]) ? 0 : (a[minime.options.sort_by])? -1 : 1;
+                });
+            }
+
         }
         this.renderHeaders();
         this.renderListPaginated();
@@ -755,6 +782,29 @@ Dataprospector.prototype = {
             });
         $prev.appendTo(pagination);
         this.dom.pagination_scrollablex = $('<div class="scrollablex col-7">');
+        this.pagination_dragging = false;
+        this.dom.pagination_scrollablex.on({
+            mousemove: function(e) {
+                if(minime.pagination_drag && Math.abs(e.pageX-minime.pagination_mx)>5) {
+                    minime.pagination_dragging = true;
+                    var mx2 = e.pageX - this.offsetLeft;
+                    if (mx) this.scrollLeft = this.sx + mx - mx2;
+                }
+            },
+            mousedown: function(e) {
+                minime.pagination_mx = e.pageX;
+                minime.pagination_my = e.pageY;
+                minime.pagination_drag = true;
+                this.sx = this.scrollLeft;
+                mx = e.pageX - this.offsetLeft;
+            },
+            mouseup: function(e){
+                setTimeout(function(){
+                    minime.pagination_drag = false;
+                    minime.pagination_dragging = false;
+                },10);
+            }
+        });
 
         for (i = 0; i < this.rendered_item_pages; i++) {
             var page = '<div class="page-item';
@@ -764,7 +814,8 @@ Dataprospector.prototype = {
             var $page = $(page);
             $page.on('click',
                 function (event) {
-                    minime.gotoPage(event);
+                    if(!minime.pagination_dragging)
+                        minime.gotoPage(event);
                 });
             $page.appendTo(this.dom.pagination_scrollablex);
         }
@@ -919,6 +970,10 @@ Dataprospector.prototype = {
     getHeaders: function () {
         var i, j, found;
         var headers = [], headers_new;
+        if(this.options.selection) {
+            headers.push('selected');
+            this.options.header_types['selected'] = 'boolean';
+        }
         for (i = 0; i < this.options.data.length; i++) {
             found = false;
             headers_new = Object.keys(this.options.data[i]);
@@ -1144,9 +1199,7 @@ Dataprospector.prototype = {
                         if (items.indexOf(option_list[j]) == -1)
                             items.push(option_list[j]);
                     }
-                    this.options.data[k][this.options.filters[i] + '_max'] = Math.max(...option_list
-                )
-                    ;
+                    this.options.data[k][this.options.filters[i] + '_max'] = Math.max(...option_list);
                     max_val = Math.max(this.options.data[k][this.options.filters[i] + '_max'], max_val);
                 }
                 items.sort(function (a, b) {
