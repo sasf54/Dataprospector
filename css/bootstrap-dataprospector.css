@@ -1,6 +1,6 @@
 
-.filter div.slider{
-	width: 90%;
+.filter div.slider {
+    width: 90%;
 }
 
 /* fixing bootstrap  */
@@ -9,8 +9,8 @@
     opacity: .9;
 }
 
-.container .multiselect-container > li > a ,
-.container .multiselect-container > li > a > label{
+.container .multiselect-container > li > a,
+.container .multiselect-container > li > a > label {
     white-space: normal;
     padding-left: 5px;
     padding-right: 0;
@@ -19,14 +19,14 @@
 }
 
 /* make mutiselect full width */
-.multiselect-native-select ,
+.multiselect-native-select,
 .multiselect-native-select .btn-group,
-.multiselect-native-select .btn-group button{
+.multiselect-native-select .btn-group button {
     width: 100%;
-    display:block;
+    display: block;
 }
 
-.lh-half{
+.lh-half {
     line-height: 0.5;
     top: 2px;
     margin-left: 2px;
@@ -37,20 +37,19 @@
 
 }
 
-ul.multiselect-container li.unavailable{
+ul.multiselect-container li.unavailable {
     opacity: 0.5;
 }
 
-.slider .tooltip{
+.slider .tooltip {
     z-index: inherit;
 }
 
-
-.item_details{
+.item_details {
     display: none;
     position: absolute;
     min-width: 60%;
-    max-width:100%;
+    max-width: 100%;
     border-radius: 1em;
     background: #ffe;
     z-index: 10;
@@ -58,15 +57,15 @@ ul.multiselect-container li.unavailable{
 }
 
 ul.multiselect-container.dropdown-menu,
-button.multiselect{
-    max-width:400px;
+button.multiselect {
+    max-width: 400px;
 }
 
-button.multiselect span.multiselect-selected-text{
+button.multiselect span.multiselect-selected-text {
     white-space: normal;
 }
 
-.pagination .scrollablex{
+.pagination .scrollablex {
     overflow-x: hidden;
     overflow-y: hidden;
 }
@@ -74,37 +73,40 @@ button.multiselect span.multiselect-selected-text{
 .pagination .scrollablex div.page-item {
     display: table-cell;
 }
+
 .pagination div.page-item:hover {
     cursor: pointer;
 }
-.carousel-control-prev ,
+
+.carousel-control-prev,
 .carousel-control-next {
     width: 10%;
 
 }
 
 .carousel-control-prev span,
-.carousel-control-next span{
+.carousel-control-next span {
     font-size: 3em;
     color: #4bc1ff;
 
 }
 
 .dataprospectors-filters-page-advanced,
-.dataprospectors-filters-page{
+.dataprospectors-filters-page {
     width: 250px;
 }
+
 .dataprospectors-filters {
     float: right;
     width: 0;
 }
 
 .dataprospector-wrapper .btn-outline-primary,
-.dataprospectors-filters .btn-outline-primary{
+.dataprospectors-filters .btn-outline-primary {
     opacity: .3;
 }
 
-.dataprospectors-filters .row{
+.dataprospectors-filters .row {
     margin: 0 0 0 5px;
 
 }
@@ -115,14 +117,16 @@ button.multiselect span.multiselect-selected-text{
     padding-right: 20px;
 
 }
+
 .input-group.filter_array_slider,
 .input-group.filter_advanced,
 .input-group.filter_range {
     display: block !important;
     margin-left: 15px;
 }
+
 .dataprospectors-filters-page-advanced h4,
-.dataprospectors-filters-page h4{
+.dataprospectors-filters-page h4 {
     margin-left: 10px;
     line-height: 2em;
 }
@@ -132,10 +136,9 @@ button.multiselect span.multiselect-selected-text{
     line-height: 2.5em;
 }
 
-.slider-horizontal .tooltip.tooltip-main.top{
+.slider-horizontal .tooltip.tooltip-main.top {
     left: 90% !important;
 }
-
 
 .dataprospectors-filter_toggle_show {
     padding: 0.5em 2px 0.5em 3px;
@@ -143,32 +146,32 @@ button.multiselect span.multiselect-selected-text{
     font-size: 1.3em;
 }
 
-.dataprospectors-filters{
+.dataprospectors-filters {
     overflow-x: hidden;
 
 }
+
 .dataprospectors-filters-page-advanced,
-.dataprospectors-filters-page{
+.dataprospectors-filters-page {
     left: 0;
     position: relative;
 }
 
-
-.dataprospectors-filters{
+.dataprospectors-filters {
     min-height: 300px;
     position: relative;
 }
 
-.dataprospectors-filters-wrapper{
+.dataprospectors-filters-wrapper {
     width: 500px;
     position: absolute;
 }
 
-.dataprospectors-filters-page{
+.dataprospectors-filters-page {
     float: left;
 }
 
-.dataprospectors-filters-page-advanced{
+.dataprospectors-filters-page-advanced {
     float: right;
 }
 
@@ -182,34 +185,35 @@ button.multiselect span.multiselect-selected-text{
     float: right;
 }
 
-.panel-collapse.collaspsing{
+.panel-collapse.collaspsing {
     min-height: 0 !important;
 }
 
 th.item_selected,
-td.item_selected{
+td.item_selected {
     white-space: nowrap;
     width: 80px;
     text-align: center;
 }
 
-td.item_selected input{
+td.item_selected input {
     transform: scale(1.5);
 }
 
-.input-group input.form-control{
+.input-group input.form-control {
     z-index: 0 !important;
 }
 
-.dataprospector-processing{
-    background: rgba(200,200,200,0.5);
+.dataprospector-processing {
+    background: rgba(200, 200, 200, 0.5);
     position: absolute;
 }
 
-.dataprospector-wrapper .pagination{
+.dataprospector-wrapper .pagination {
     display: block;
 }
-.dataprospector-wrapper .pagination > div{
+
+.dataprospector-wrapper .pagination > div {
     display: inline-block;
     vertical-align: bottom;
 }
@@ -226,11 +230,12 @@ td.item_selected input{
     border: 1px solid #4bc1ff;
 }
 
-.context-menu ul{
+.context-menu ul {
     padding: 3px;
     margin-bottom: 0;
 }
-.context-menu li{
+
+.context-menu li {
     list-style: none;
     border: 1px solid #eff;
     padding: 5px;
@@ -239,28 +244,31 @@ td.item_selected input{
 
 }
 
-.context-menu li:hover{
+.context-menu li:hover {
     background: #efe;
     border: 1px solid #4bc1ff;
     padding: 5px;
-    border-radius:  7px;
-    cursor:pointer;
+    border-radius: 7px;
+    cursor: pointer;
 }
 
 .context-menu li.download {
     background: #cfc;
     border-radius: 7px;
 }
+
 .context-menu li.download:hover {
     background: #afa;
 }
-.context-menu li.separator{
+
+.context-menu li.separator {
     border-bottom: 1px solid #4bc1ff;
-    margin-bottom:10px;
+    margin-bottom: 10px;
     background: #eff;
     border-radius: 0;
 }
-.context-menu li.separator:hover{
+
+.context-menu li.separator:hover {
     background: #eff;
     border-width: 0 0 1px 0;
     border-radius: 0;
@@ -271,8 +279,50 @@ td.item_selected input{
 .dataprospectors-filters-page span:hover,
 .slider-handle:hover,
 .dataprospectors-filter_advanced_toggle_show:hover,
-.dataprospectors-filter_toggle_show:hover{
-    cursor:pointer;
+.dataprospectors-filter_toggle_show:hover {
+    cursor: pointer;
 }
 
+html body .jqplot-canvasOverlay-tooltip,
+html body .jqplot-cursor-tooltip,
+html body .jqplot-highlighter-tooltip {
+    border: 1px solid #aaa;
+    font-size: .75em;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 5px 10px 0 10px;
+    border-radius: 5px;
+    color: #444;
+}
 
+.jqplot-base-canvas {
+    border-radius: 10px;
+    border: 2px solid #ccc;
+    margin: 0;
+    width: 860px !important;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.full_plot {
+    position: fixed;
+    z-index: 2;
+}
+
+.full_plot .label {
+    background: #f8f8f8;
+    border: solid #777;
+    border-radius: 5px 5px 0 0;
+    padding: 5px;
+    border-width: 1px;
+    cursor: move;
+}
+
+.full_plot .jqplot-target {
+    -webkit-user-select: none;
+}
+
+.js-lib {
+    font-size: 110%;
+    margin-right: 10px;
+    font-weight: bold;
+}

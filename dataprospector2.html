@@ -1,24 +1,22 @@
 <html>
 
 <head>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-        <title>Dataprospector - example 2</title>
-        <script type='text/javascript' src="js/jquery-1.9.1.0.min.js"></script>
-        <script type='text/javascript' src="js/bootstrap.js"></script>
-        <script type='text/javascript' src="js/bootstrap-slider.js"></script>
-        <script type='text/javascript' src="js/bootstrap-multiselect.js"></script>
-        <script type='text/javascript' src="js/bootstrap-dataprospector.js"></script>
-        <script type='text/javascript' src="js/cpu_items_array.js"></script>
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/bootstrap-dataprospector.css" rel="stylesheet">
-        <link href="css/bootstrap-slider.css" rel="stylesheet">
-        <link href="css/bootstrap-multiselect.css" rel="stylesheet">
-        <link href="css/open-iconic-bootstrap.css" rel="stylesheet">
-    </head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Dataprospector - example 2</title>
+    <script type='text/javascript' src="js/jquery-1.9.1.0.min.js"></script>
+    <script type='text/javascript' src="js/bootstrap.js"></script>
+    <script type='text/javascript' src="js/bootstrap-slider.js"></script>
+    <script type='text/javascript' src="js/bootstrap-multiselect.js"></script>
+    <script type='text/javascript' src="js/bootstrap-dataprospector.js"></script>
+    <script type='text/javascript' src="js/cpu_items_array.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap-dataprospector.css" rel="stylesheet">
+    <link href="css/bootstrap-slider.css" rel="stylesheet">
+    <link href="css/bootstrap-multiselect.css" rel="stylesheet">
+    <link href="css/open-iconic-bootstrap.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar  navbar-toggleable-md navbar-light bg-inverse navbar-inverse sticky-top">
@@ -47,6 +45,8 @@
                        title="Init from file open">Example 5</a>
                     <a class="dropdown-item tooltip_init" href="dataprospector6.html" data-toggle="tooltip"
                        title="Init from array - array and advanced filters">Example 6</a>
+                    <a class="dropdown-item tooltip_init" href="dataprospector7.html" data-toggle="tooltip"
+                       title="Use graph to visualize / filter">Example 7</a>
                 </div>
             </li>
         </ul>
@@ -59,7 +59,8 @@
                 <a data-toggle="collapse" href="#cpuPanel" id="cpu_item_count"><h3>CPU</h3></a>
             </div>
         </div>
-        <div class="panel-collapse collapse_ show " id="cpuPanel" style="border-bottom:2px #888 solid;margin-bottom:50px;"></div>
+        <div class="panel-collapse collapse_ show " id="cpuPanel"
+             style="border-bottom:2px #888 solid;margin-bottom:50px;"></div>
     </div>
 </div>
 <script type="application/javascript">
@@ -67,7 +68,7 @@
     var cpu_dt = new Dataprospector($("#cpuPanel"), {
         data: cpu_items_array,
         header_shown: [0, 1, 2],
-        header_names: ["Shop","Name","Price"],
+        header_names: ["Shop", "Name", "Price"],
         units: {'price': 'Ft', 'power': 'W', 'freq': 'Mhz'},
         filters_opened: true
     });

@@ -31,7 +31,7 @@
  * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-(function (root, factory) {
+(function(root, factory) {
     // check to see if 'knockout' AMD module is specified if using requirejs
     if (typeof define === 'function' && define.amd &&
         typeof require === 'function' && typeof require.specified === 'function' && require.specified('knockout')) {
@@ -42,7 +42,7 @@
         // Browser globals
         factory(root.jQuery, root.ko);
     }
-})(this, function ($, ko) {
+})(this, function($, ko) {
     "use strict";// jshint ;
 });
 
@@ -70,7 +70,10 @@ function Dataprospector(select, options) {
         item_details_placeholder_element: false,
         filter_sorters: {},
         download_href_placeholder: false,
-        context_menu: false
+        context_menu: false,
+        header_context_menu: false,
+        plot: false,
+        plot_graph: false
     };
     this.filtering = {
         string: {},
@@ -118,7 +121,7 @@ function Dataprospector(select, options) {
         this.options.data = data;
         var new_div = $("<div>");
 
-        $.each(this.dom.root[0].attributes, function () {
+        $.each(this.dom.root[0].attributes, function() {
             new_div.attr(this.name, this.value);
         });
 
@@ -132,12 +135,12 @@ function Dataprospector(select, options) {
         var header_line = false;
         var reader = new FileReader();
         reader.readAsText(tmp_select[0].files[0], "UTF-8");
-        reader.onload = function (result) {
+        reader.onload = function(result) {
             minime.fileLoad(result, tmp_select[0].files[0].type);
         };
         return;
     }
-    if(this.options.selection) {
+    if (this.options.selection) {
         var i;
         for (i = 0; i < this.options.data.length; i++) {
             this.options.data[i]['selected'] = false;
@@ -209,6 +212,14 @@ Dataprospector.prototype = {
         context_menu: false,
         context_menu_download: false,
         no_details: false,
+        plot: {
+            plotter: false,
+            xaxis: false,
+            yaxis: false,
+            mode: false,
+            visible: false
+        },
+        plot_id: false,
         templates: {
             data_wrapper: "<div class=\"dataprospector-wrapper\"></div>",
             pagination_root: "<div class=\"row pagination justify-content-center\"></div>",
@@ -262,11 +273,20 @@ Dataprospector.prototype = {
 
             context_menu: '<div id="context_%unique_id%" class="context-menu"><ul><li data-action="filter_like">Filter like these</li><li data-action="filter_manual_reset">Reset manual filters</li><li data-action="filter_all_reset">Reset all filters</li>%context_select_remaining%%context_menu_download%</ul></div>',
             context_select_remaining: '<li data-action="unselect_all">Unselect any item</li><li data-action="select_unfiltered">Select all remaining element</li>',
-            context_download: '<li class="separator"></li><li data-action="download_JSON" class="download">Download selected as JSON</li><li data-action="download_CSV" class="download">Download selected as CSV</li><li data-action="download_TXT" class="download">Download selected as TXT</li><li data-action="download_XML1" class="download">Download selected as XML (atributes)</li><li data-action="download_XML2" class="download">Download selected as XML (tags)</li><li data-action="download_SQL" class="download">Download selected as SQL</li>'
+            context_download: '<li class="separator"></li><li data-action="download_JSON" class="download">Download selected as JSON</li><li data-action="download_CSV" class="download">Download selected as CSV</li><li data-action="download_TXT" class="download">Download selected as TXT</li><li data-action="download_XML1" class="download">Download selected as XML (atributes)</li><li data-action="download_XML2" class="download">Download selected as XML (tags)</li><li data-action="download_SQL" class="download">Download selected as SQL</li>',
+            header_context_menu: '<div id="header_context_%unique_id%" class="context-menu"><ul><li data-action="plot">Plot selected results</li><li data-action="plot_all">Plot all</li></ul></div>',
+            plot: '<div class="full_plot draggable"><div class="label w-100 draggable-handle">Graph: (drag me)<div class="oi oi-circle-x float-right close_plot">&nbsp;</div></div>' +
+            '<div class="label w-100">' +
+            '<div class="button w-25 d-inline-block"><input type="checkbox" name="selected_items"/>Selected items</div>' +
+            '<div class="button w-25 d-inline-block"><label>Select Y axis: </label><select class="yaxis" name="select_yaxis"></select></div>' +
+            '<div class="button w-25 d-inline-block"><label>Select X axis: </label><select class="xaxis" name="select_xaxis"></select></div>' +
+            '<div class="button w-25 d-inline-block"><button class="reset-zoom" >Reset zoom</button></div>' +
+            '</div><div id="plot_%unique_id%" ></div></div>',
+            plot_column_option: '<option value="%column%">%name%</option>'
         }
     },
     constructor: Dataprospector,
-    fileLoad: function (content, type) {
+    fileLoad: function(content, type) {
         if (type == "application/json") {
             this.options.data = JSON.parse(content.target.result);
             this.options.selection = true;
@@ -293,7 +313,7 @@ Dataprospector.prototype = {
 
         var new_div = $("<div>");
 
-        $.each(this.dom.root[0].attributes, function () {
+        $.each(this.dom.root[0].attributes, function() {
             new_div.attr(this.name, this.value);
         });
 
@@ -303,7 +323,7 @@ Dataprospector.prototype = {
 
         this.renderHTML();
     },
-    renderHTML: function () {
+    renderHTML: function() {
         var minime = this;
         // we need this to position the item details correctly
         var parent = $(this.dom.root);
@@ -331,7 +351,7 @@ Dataprospector.prototype = {
         this.rendered_item_pages = Math.ceil(this.options.data.length / this.options.items_per_page);
         if (this.options.filters) {
             this.dom.filter_toggle_show = $(this.options.templates.filter_toggle_show);
-            this.dom.filter_toggle_show.on("click", $.proxy(function (event) {
+            this.dom.filter_toggle_show.on("click", $.proxy(function(event) {
                 minime.toggleShowFilters();
             }));
             this.dom.filter_toggle_show.appendTo(this.dom.pagination_root);
@@ -367,17 +387,16 @@ Dataprospector.prototype = {
                 context_menu = context_menu.replace("%context_menu_download%", "");
             }
             this.dom.context_menu = $(context_menu);
-            this.dom.context_menu.on("mouseleave", function (event) {
+            this.dom.context_menu.on("mouseleave", function(event) {
                 minime.contextMenuClose();
             });
-            this.dom.context_menu.on("click", function (event) {
+            this.dom.context_menu.on("click", function(event) {
                 minime.contextMenuEvent(event);
             });
             this.dom.context_menu.appendTo(this.dom.root_wrapper);
-
         }
-
         // if options.filters = ['name','domain'] filter for 'name' and 'domain'
+
         this.getHeaders();
         this.getColumnTypes();
         if (!this.options.hasOwnProperty("sort_by") || !this.options.sort_by) {
@@ -404,10 +423,11 @@ Dataprospector.prototype = {
             var lastTime = this.options.filter_animation_time;
             this.options.filter_animation_time = 0;
             this.toggleShowFilters(this);
-            setTimeout(function () {
+            setTimeout(function() {
                 minime.options.filter_animation_time = lastTime;
             }, 100);
         }
+
         // get real height of display: none elements
         var previousCss = this.dom.root.attr("style");
         this.dom.root
@@ -422,6 +442,75 @@ Dataprospector.prototype = {
         // resetting root's css back
         this.dom.root.attr("style", previousCss ? previousCss : "");
         this.dom.root_wrapper.css("min-height", min_height + 5);
+        this.renderPlotHTML();
+
+    },
+    renderPlotHTML: function() {
+        // header context menu render
+        if (this.options.plot_id !== false) {
+            var minime = this;
+            var header_context_menu = this.options.templates.header_context_menu.replace("%unique_id%", this.unique_id);
+            this.dom.header_context_menu = $(header_context_menu);
+            this.dom.header_context_menu.on("mouseleave", function(event) {
+                minime.headerContextMenuClose();
+            });
+            this.dom.header_context_menu.on("click", function(event) {
+                minime.headerContextMenuEvent(event);
+            });
+            this.dom.header_context_menu.appendTo(this.dom.root_wrapper);
+            this.dom.plot = $(this.options.templates.plot.replace("%unique_id%", this.unique_id));
+
+            this.dom.plot.appendTo(this.dom.root_wrapper);
+            this.dom.plot.draggable({handle: ".draggable-handle"});
+            var i;
+            // xaxis
+            var currentAxis = this.dom.plot.find("select.xaxis");
+            currentAxis.on("change", function() {
+                minime.plotUpdateFromSelects();
+            });
+            $(this.options.templates.plot_column_option.replace("%column%", "0").replace("%name%", " - row number - ")).appendTo(currentAxis);
+            for (i = 0; i < this.options.filters.length; i++) {
+                var header_name = this.options.filters[i];
+                if (this.options.header_names && this.options.header_names.hasOwnProperty(this.options.filters[i])) {
+                    header_name = this.options.header_names[this.options.filters[i]];
+                }
+
+
+                if (this.options.header_types[this.options.filters[i]] == "range") {
+
+                    var option = this.options.templates.plot_column_option.replace("%column%", this.options.filters[i]).replace("%name%", header_name);
+                    $(option).appendTo(currentAxis);
+                }
+            }
+            currentAxis = this.dom.plot.find("select.yaxis");
+            currentAxis.on("change", function() {
+                minime.plotUpdateFromSelects();
+            });
+
+
+            $(this.options.templates.plot_column_option.replace("%column%", "0").replace("%name%", " - row number - ")).appendTo(currentAxis);
+            for (i = 0; i < this.options.filters.length; i++) {
+                var header_name = this.options.filters[i];
+                if (this.options.header_names && this.options.header_names.hasOwnProperty(this.options.filters[i])) {
+                    header_name = this.options.header_names[this.options.filters[i]];
+                }
+
+
+                if (this.options.header_types[this.options.filters[i]] == "range") {
+                    var option = this.options.templates.plot_column_option.replace("%column%", this.options.filters[i]).replace("%name%", header_name);
+                    $(option).appendTo(currentAxis);
+                }
+            }
+            this.dom.plot_graph = this.dom.plot.find("#plot_" + this.unique_id);
+            this.dom.plot.find(".close_plot").on("click", function(event) {
+                minime.plotClose();
+            });
+            this.dom.plot.find("button.reset-zoom").on("click", function(event) {
+                minime.plotFilterReset();
+            });
+            this.dom.plot.hide();
+        }
+
     },
     /**
      * Merges the given options with the default options.
@@ -429,10 +518,10 @@ Dataprospector.prototype = {
      * @param {Array} options
      * @returns {Array}
      */
-    mergeOptions: function (options) {
+    mergeOptions: function(options) {
         return $.extend(true, {}, this.defaults, this.options, options);
     },
-    filterByString: function (attribute, value) {
+    filterByString: function(attribute, value) {
         var name_filter = value.toLowerCase();
         var i, j;
         if (name_filter != null && name_filter != "") {
@@ -453,12 +542,12 @@ Dataprospector.prototype = {
             }
         }
     },
-    filterBySlider: function (attribute, slider_item) {
-        var range_min = slider_item.getValue()[0];
-        var range_max = slider_item.getValue()[1];
+    filterBySlider: function(attribute, slider_item) {
+        var range_min = slider_item.slider("getValue")[0];
+        var range_max = slider_item.slider("getValue")[1];
         this.filterByRange(attribute, range_min, range_max);
     },
-    filterByRange: function (attribute, range_min, range_max) {
+    filterByRange: function(attribute, range_min, range_max) {
         var i;
         for (i = 0; i < this.options.data.length; i++) {
             if (this.options.data[i][attribute] < range_min || this.options.data[i][attribute] > range_max) {
@@ -466,12 +555,12 @@ Dataprospector.prototype = {
             }
         }
     },
-    filterByArraySlider: function (attribute, slider_item) {
+    filterByArraySlider: function(attribute, slider_item) {
         var range_min = slider_item.getValue()[0];
         var range_max = slider_item.getValue()[1];
         this.filterByArrayRange(attribute, range_min, range_max);
     },
-    filterByArrayRange: function (attribute, range_min, range_max) {
+    filterByArrayRange: function(attribute, range_min, range_max) {
         var i, j, filtered_out;
         for (i = 0; i < this.options.data.length; i++) {
             filtered_out = true;
@@ -487,14 +576,14 @@ Dataprospector.prototype = {
                 this.options.data[i].filtered_out = true;
         }
     },
-    filterByArraySelect: function (attribute, select) {
+    filterByArraySelect: function(attribute, select) {
         if (select != null && select.val() != null) {
             var select_item = select.val();
             this.filterByString(attribute, select_item);
         }
 
     },
-    filterByArrayString: function (attribute, select_item) {
+    filterByArrayString: function(attribute, select_item) {
         var i, j, k;
         for (i = 0; i < this.options.data.length; i++) {
             var f = true;
@@ -513,13 +602,13 @@ Dataprospector.prototype = {
         }
 
     },
-    filterByOptions: function (attribute, select) {
+    filterByOptions: function(attribute, select) {
         if (select != null && select.val() != null) {
             var select_item = select.val();
             this.filterByEnums(attribute, select_item);
         }
     },
-    filterByEnums: function (attribute, select_item) {
+    filterByEnums: function(attribute, select_item) {
         var filters = new Array();
         var i, j;
         for (i = 0; i < select_item.length; i++) {
@@ -537,7 +626,7 @@ Dataprospector.prototype = {
             }
         }
     },
-    getMinMax: function (attribute) {
+    getMinMax: function(attribute) {
         var i, low = Number.POSITIVE_INFINITY, high = Number.NEGATIVE_INFINITY;
         for (i = 0; i < this.options.data.length; i++) {
             var tmp = Number.parseFloat(this.options.data[i][attribute]);
@@ -546,7 +635,7 @@ Dataprospector.prototype = {
         }
         return [low, high];
     },
-    getOptions: function (attribute) {
+    getOptions: function(attribute) {
         var i, j, result = [];
         var found;
         for (i = 0; i < this.options.data.length; i++) {
@@ -564,7 +653,7 @@ Dataprospector.prototype = {
 
     },
 
-    renderHeaders: function () {
+    renderHeaders: function() {
         $(this.dom.tableHead).find("*").remove(); // not dynamic :(
         // var parent = this.tableRootElement;
         var $header_html = $(this.options.templates.header_row);
@@ -572,7 +661,7 @@ Dataprospector.prototype = {
         var i;
         // if headers_shown is not set, show all be default
         if (!this.options.header_shown || this.options.header_shown.length == 0) {
-            if(this.options.selection){
+            if (this.options.selection) {
                 this.options.header_shown = [];
                 this.options.header_shown.push('selected');
                 this.options.header_shown.push(this.options.headers);
@@ -588,7 +677,7 @@ Dataprospector.prototype = {
 
         // the last will be the sorted header, if not already shown
         this.tmp_header_shown = [];
-        if(!sorted_header_found && this.options.selection && this.options.sort_by == 'selected')
+        if (!sorted_header_found && this.options.selection && this.options.sort_by == 'selected')
             sorted_header_found = true;
         for (i = 0; i < this.options.header_shown.length; i++)
             this.tmp_header_shown.push(this.options.header_shown[i]);
@@ -615,17 +704,21 @@ Dataprospector.prototype = {
             var minime = this;
             $sort_up.attr("data-sort-by", sort_by);
             $sort_up.attr("data-sort-reverse", "true");
-            $sort_up.on("click", function (event) {
+            $sort_up.on("click", function(event) {
                 minime.sortBy(event);
             });
             // $sort_down.attr("data-sort-by", this.tmp_header_shown[i]);
             $sort_down.attr("data-sort-by", sort_by);
             $sort_down.attr("data-sort-reverse", "false");
-            $sort_down.on("click", function (event) {
+            $sort_down.on("click", function(event) {
                 minime.sortBy(event);
             });
             $sort_down.appendTo($header);
             $sort_up.appendTo($header);
+            $header.on('contextmenu', function(event) {
+                minime.headerContextMenu(event);
+            });
+
             $header.appendTo(this.dom.tableHead);
         }
 
@@ -653,23 +746,28 @@ Dataprospector.prototype = {
             var minime = this;
             $sort_up.attr("data-sort-by", sort_by);
             $sort_up.attr("data-sort-reverse", "true");
-            $sort_up.on("click", function (event) {
+            $sort_up.on("click", function(event) {
                 minime.sortBy(event);
             });
             // $sort_down.attr("data-sort-by", this.tmp_header_shown[i]);
             $sort_down.attr("data-sort-by", sort_by);
             $sort_down.attr("data-sort-reverse", "false");
-            $sort_down.on("click", function (event) {
+            $sort_down.on("click", function(event) {
                 minime.sortBy(event);
             });
             $sort_down.appendTo($header);
             $sort_up.appendTo($header);
+            if (this.options.plot_id)
+                $header.on('contextmenu', function(event) {
+                    minime.headerContextMenu(event);
+                });
+
             $header.appendTo(this.dom.tableHead);
 
         }
 
     },
-    sortBy: function (event) {
+    sortBy: function(event) {
         if (event && event.hasOwnProperty("currentTarget")) {
             this.options.sort_by = $(event.currentTarget).attr("data-sort-by");
             this.options.sort_reverse = $(event.currentTarget).attr("data-sort-reverse") == 'true';
@@ -687,40 +785,45 @@ Dataprospector.prototype = {
         if (type == "range" || hasAdvanced) {
             if (this.options.sort_reverse) {
                 // this.options.data.sort(this.compareInt);
-                this.options.data.sort(function (a, b) {
+                this.options.data.sort(function(a, b) {
                     return (b[minime.options.sort_by]) - (a[minime.options.sort_by]);
                 });
             } else {
-                this.options.data.sort(function (a, b) {
+                this.options.data.sort(function(a, b) {
                     return (a[minime.options.sort_by]) - (b[minime.options.sort_by]);
                 });
             }
         }
         if (type == "string" || type == "options" || type == "array_string") {
             if (this.options.sort_reverse) {
-                this.options.data.sort(function (a, b) {
+                this.options.data.sort(function(a, b) {
                     return (b[minime.options.sort_by].toLowerCase()).localeCompare(a[minime.options.sort_by].toLowerCase());
                 });
             } else {
-                this.options.data.sort(function (a, b) {
+                this.options.data.sort(function(a, b) {
                     return (a[minime.options.sort_by].toLowerCase()).localeCompare(b[minime.options.sort_by].toLowerCase());
                 });
             }
         }
-        if(type == 'boolean'){
+        if (type == 'boolean') {
             if (this.options.sort_reverse) {
-                this.options.data.sort(function (a, b) {
-                    return (b[minime.options.sort_by] === a[minime.options.sort_by]) ? 0 : (b[minime.options.sort_by])? -1 : 1;
+                this.options.data.sort(function(a, b) {
+                    return (b[minime.options.sort_by] === a[minime.options.sort_by]) ? 0 : (b[minime.options.sort_by]) ? -1 : 1;
                 });
             } else {
-                this.options.data.sort(function (a, b) {
-                    return (a[minime.options.sort_by] === b[minime.options.sort_by]) ? 0 : (a[minime.options.sort_by])? -1 : 1;
+                this.options.data.sort(function(a, b) {
+                    return (a[minime.options.sort_by] === b[minime.options.sort_by]) ? 0 : (a[minime.options.sort_by]) ? -1 : 1;
                 });
             }
 
         }
         this.renderHeaders();
         this.renderListPaginated();
+        if (this.options.plot.visible) {
+            this.plotTimeoutCount++;
+            setTimeout(this.plotTimeout(), 200);
+        }
+
         var i;
         // marking the current sorting arrow
         if (this.filtering.advanced) {
@@ -749,7 +852,7 @@ Dataprospector.prototype = {
                 this.dom.filter_sorters[this.options.sort_by].down.addClass(this.options.templates.header_column_selected);
         }
     },
-    disableUnavailableOptions: function (attribute, multiselect) {
+    disableUnavailableOptions: function(attribute, multiselect) {
         var multiselect_inputs = multiselect.parent().parent().find("ul.multiselect-container li input");
         var unfiltered_options = [], i, j, k;
         j = 0;
@@ -770,14 +873,14 @@ Dataprospector.prototype = {
             }
         }
     },
-    renderPagination: function () {
+    renderPagination: function() {
         var pagination = this.dom.pagination_root;
         pagination.children().not(".dataprospectors-filter_toggle_show").detach();
         var i;
         var minime = this;
         var $prev = $(this.options.templates.pagination_next_prev.replace("%direction%", "Previous"));
         $prev.on('click',
-            function (event) {
+            function(event) {
                 minime.gotoPage(event);
             });
         $prev.appendTo(pagination);
@@ -785,7 +888,7 @@ Dataprospector.prototype = {
         this.pagination_dragging = false;
         this.dom.pagination_scrollablex.on({
             mousemove: function(e) {
-                if(minime.pagination_drag && Math.abs(e.pageX-minime.pagination_mx)>5) {
+                if (minime.pagination_drag && Math.abs(e.pageX - minime.pagination_mx) > 5) {
                     minime.pagination_dragging = true;
                     var mx2 = e.pageX - this.offsetLeft;
                     if (mx) this.scrollLeft = this.sx + mx - mx2;
@@ -798,11 +901,11 @@ Dataprospector.prototype = {
                 this.sx = this.scrollLeft;
                 mx = e.pageX - this.offsetLeft;
             },
-            mouseup: function(e){
-                setTimeout(function(){
+            mouseup: function(e) {
+                setTimeout(function() {
                     minime.pagination_drag = false;
                     minime.pagination_dragging = false;
-                },10);
+                }, 10);
             }
         });
 
@@ -813,8 +916,8 @@ Dataprospector.prototype = {
             page += '"><div class="page-link">' + (i + 1) + '</div></div>';
             var $page = $(page);
             $page.on('click',
-                function (event) {
-                    if(!minime.pagination_dragging)
+                function(event) {
+                    if (!minime.pagination_dragging)
                         minime.gotoPage(event);
                 });
             $page.appendTo(this.dom.pagination_scrollablex);
@@ -822,13 +925,13 @@ Dataprospector.prototype = {
         this.dom.pagination_scrollablex.appendTo(pagination);
         var $next = $(this.options.templates.pagination_next_prev.replace("%direction%", "Next"));
         $next.on('click',
-            function (event) {
+            function(event) {
                 minime.gotoPage(event);
             });
         $next.appendTo(pagination);
         $next.after(this.dom.filter_toggle_show);
     },
-    gotoPage: function (event) {
+    gotoPage: function(event) {
         var el = event.currentTarget;
         var page = parseInt($(el).text());
         var parent;
@@ -855,7 +958,7 @@ Dataprospector.prototype = {
         }
         this.renderListPaginated();
     },
-    renderListPaginated: function () {
+    renderListPaginated: function() {
         var skipped = 0;
         var rendered = 0;
         var i;
@@ -873,8 +976,9 @@ Dataprospector.prototype = {
                 this.renderItem(i).appendTo(parent).appendTo(this.dom.tableBody);
             }
         }
+
     },
-    renderItem: function (i) {
+    renderItem: function(i) {
         var j;
         var html = this.options.templates.table_row.replace(">", ' data-item_list_id="' + i + '">');
         var content;
@@ -907,29 +1011,29 @@ Dataprospector.prototype = {
         var $listItem = $(html);
         var minime = this;
         if (!this.options.no_details) {
-            $listItem.on("mouseenter", function (event) {
+            $listItem.on("mouseenter", function(event) {
                 minime.renderItemDetails(event, i);
             });
 
-            $listItem.on("mouseleave", function () {
+            $listItem.on("mouseleave", function() {
                 minime.dom.item_details_placeholder_element.hide();
             });
         }
         if (this.options.context_menu) {
-            $listItem.on('contextmenu', function (event) {
+            $listItem.on('contextmenu', function(event) {
                 minime.contextMenu(event);
             });
         }
 
         if (this.options.selection) {
-            $listItem.find("input[name=" + i + "]").on("click", function (event) {
+            $listItem.find("input[name=" + i + "]").on("click", function(event) {
                 minime.toggleItemSelected(event);
             });
         }
 
         return $listItem;
     },
-    renderItemDetails: function (event, i) {
+    renderItemDetails: function(event, i) {
         var content;
         var cnt;
         content = this.options.templates.item_details_wrapper;
@@ -967,10 +1071,10 @@ Dataprospector.prototype = {
         var relY = event.pageY - this.dom.document_subroot.offset().top;
         this.dom.item_details_placeholder_element.css('display', "block").css("left", relX).css('top', relY + 5);
     },
-    getHeaders: function () {
+    getHeaders: function() {
         var i, j, found;
         var headers = [], headers_new;
-        if(this.options.selection) {
+        if (this.options.selection) {
             headers.push('selected');
             this.options.header_types['selected'] = 'boolean';
         }
@@ -987,7 +1091,7 @@ Dataprospector.prototype = {
         }
         this.options.headers = headers;
     },
-    getColumnTypes: function () {
+    getColumnTypes: function() {
         var i;
         var length = this.options.data.length;
         for (i = 0; i < this.options.headers.length; i++) {
@@ -1009,16 +1113,16 @@ Dataprospector.prototype = {
             }
         }
     },
-    isBooleanColumn: function (attribute) {
+    isBooleanColumn: function(attribute) {
         var i;
         for (i = 0; i < this.options.data.length; i++) {
             if (!(this.options.data[i][attribute] === true || this.options.data[i][attribute] === false ||
-                    this.options.data[i][attribute] === 'true' || this.options.data[i][attribute] === 'false'))
+                this.options.data[i][attribute] === 'true' || this.options.data[i][attribute] === 'false'))
                 return false;
         }
         return true;
     },
-    isNumericalColumn: function (attribute) {
+    isNumericalColumn: function(attribute) {
         var i;
         for (i = 0; i < this.options.data.length; i++) {
             if (isNaN(this.options.data[i][attribute]))
@@ -1026,9 +1130,10 @@ Dataprospector.prototype = {
         }
         return true;
     },
-    renderFilters: function () {
+    renderFilters: function() {
         var i;
         var minime = this;
+        this.dom.filter_page_simple.html("");
         for (i = 0; i < this.options.filters.length; i++) {
             var row = $(this.options.templates.filter_row);
             var wrapper = $(this.options.templates.filter_element_root);
@@ -1052,12 +1157,12 @@ Dataprospector.prototype = {
             var sort_by = this.options.filters[i];
             sort_up.attr("data-sort-by", sort_by);
             sort_up.attr("data-sort-reverse", "true");
-            sort_up.on("click", function (event) {
+            sort_up.on("click", function(event) {
                 minime.sortBy(event);
             });
             sort_down.attr("data-sort-by", sort_by);
             sort_down.attr("data-sort-reverse", "false");
-            sort_down.on("click", function (event) {
+            sort_down.on("click", function(event) {
                 minime.sortBy(event);
             });
             sort_down.appendTo(label);
@@ -1072,10 +1177,10 @@ Dataprospector.prototype = {
             if (filter_type == "string") {
                 var input_string = $(this.options.templates.filter_element_input_string.replace("%header%", this.options.filters[i]));
                 this.filtering.string[this.options.filters[i]] = input_string;
-                input_string.on("change", function (event) {
+                input_string.on("change", function(event) {
                     minime.filterItems();
                 });
-                input_string.on("keyup", function (event) {
+                input_string.on("keyup", function(event) {
                     minime.filterItems();
                 });
                 input_string.appendTo($input);
@@ -1103,8 +1208,10 @@ Dataprospector.prototype = {
                 $input.appendTo(wrapper);
                 wrapper.appendTo(row);
                 row.appendTo(this.dom.filter_page_simple);
-                this.filtering.slider[this.options.filters[i]] = new Slider(input_range.find("input")[0]);
-                this.filtering.slider[this.options.filters[i]].on("slide", function (event) {
+                // old, not so good init  todo: remove me
+                // this.filtering.slider[this.options.filters[i]] = new Slider(input_range.find("input")[0]);
+                this.filtering.slider[this.options.filters[i]] = $(input_range.find("input")[0]).slider();
+                this.filtering.slider[this.options.filters[i]].on("slide", function(event) {
                     minime.filterItems();
                 });
             }
@@ -1120,7 +1227,7 @@ Dataprospector.prototype = {
                     var option = $(this.options.templates.filter_element_input_enum_option.replace("%value%", items[j]).replace("%value%", items[j]));
                     option.appendTo(select);
                 }
-                select.on("change", function () {
+                select.on("change", function() {
                     minime.filterItems()
                 });
                 select.appendTo($input);
@@ -1133,9 +1240,9 @@ Dataprospector.prototype = {
                     maxHeight: 400,
                     numberDisplayed: 2,
                     enableCaseInsensitiveFiltering: true,
-                    onChange: function (event) {
+                    onChange: function(event) {
                         minime.filterItems()
-                        setTimeout(function () {
+                        setTimeout(function() {
                             minime.correctFilterHeight();
                         }, 50);
                     }
@@ -1154,7 +1261,7 @@ Dataprospector.prototype = {
                             items.push(option_split[j]);
                     }
                 }
-                items.sort(function (a, b) {
+                items.sort(function(a, b) {
                     return (a.toLowerCase()).localeCompare(b.toLowerCase());
                 });
                 var select = $(this.options.templates.filter_element_input_enum.replace("%unique_id%", this.unique_id).replace("%header%", this.options.filters[i]));
@@ -1176,7 +1283,7 @@ Dataprospector.prototype = {
                     maxHeight: 400,
                     numberDisplayed: 2,
                     enableCaseInsensitiveFiltering: true,
-                    onChange: function (event) {
+                    onChange: function(event) {
                         minime.filterItems()
                     }
                 });
@@ -1199,10 +1306,12 @@ Dataprospector.prototype = {
                         if (items.indexOf(option_list[j]) == -1)
                             items.push(option_list[j]);
                     }
-                    this.options.data[k][this.options.filters[i] + '_max'] = Math.max(...option_list);
+                    this.options.data[k][this.options.filters[i] + '_max'] = Math.max(...option_list
+                )
+                    ;
                     max_val = Math.max(this.options.data[k][this.options.filters[i] + '_max'], max_val);
                 }
-                items.sort(function (a, b) {
+                items.sort(function(a, b) {
                     return a - b;
                 });
                 var input_array_range = this.options.templates.filter_element_input_range;
@@ -1224,20 +1333,20 @@ Dataprospector.prototype = {
                 wrapper.appendTo(row);
                 row.appendTo(this.dom.filter_page_simple);
                 this.filtering.array_slider[this.options.filters[i]] = new Slider(row.find("input")[0]);
-                this.filtering.array_slider[this.options.filters[i]].on("slide", function (event) {
+                this.filtering.array_slider[this.options.filters[i]].on("slide", function(event) {
                     minime.filterItems();
                 });
             }
         }
     },
     // all advanced filters will be slider!
-    renderAdvancedFilters: function () {
+    renderAdvancedFilters: function() {
         var minime = this;
         this.dom.filter_page_advanced = $(this.options.templates.filter_page_advanced);
         this.dom.filter_advanced_toggle_show = $(this.options.templates.filter_advanced_toggle_show);
         this.dom.filter_page_advanced.appendTo(this.dom.filter_root_wrapper);
         this.dom.filter_advanced_toggle_show.appendTo(this.dom.filter_root);
-        this.dom.filter_advanced_toggle_show.on("click", function (event) {
+        this.dom.filter_advanced_toggle_show.on("click", function(event) {
             minime.toggleAdvancedFilter();
         });
         var i, j, k;
@@ -1273,12 +1382,12 @@ Dataprospector.prototype = {
             var sort_by = this.options.advanced_filters[i]['name'];
             sort_up.attr("data-sort-by", sort_by);
             sort_up.attr("data-sort-reverse", "true");
-            sort_up.on("click", function (event) {
+            sort_up.on("click", function(event) {
                 minime.sortBy(event);
             });
             sort_down.attr("data-sort-by", sort_by);
             sort_down.attr("data-sort-reverse", "false");
-            sort_down.on("click", function (event) {
+            sort_down.on("click", function(event) {
                 minime.sortBy(event);
             });
             sort_down.appendTo(label);
@@ -1309,21 +1418,22 @@ Dataprospector.prototype = {
             $input.appendTo(wrapper);
             wrapper.appendTo(row);
             row.appendTo(this.dom.filter_page_advanced);
-            this.filtering.advanced[this.options.advanced_filters[i]['name']] = new Slider(row.find("input")[0]);
-            this.filtering.advanced[this.options.advanced_filters[i]['name']].on("slide", function (event) {
+            // this.filtering.advanced[this.options.advanced_filters[i]['name']] = new Slider(row.find("input")[0]);
+            this.filtering.advanced[this.options.advanced_filters[i]['name']] = $(row.find("input")[0]).slider();
+            this.filtering.advanced[this.options.advanced_filters[i]['name']].on("slide", function(event) {
                 minime.filterItems();
             });
             this.options.header_types[this.options.advanced_filters[i]['name']] = 'advanced';
         }
     },
-    toggleAdvancedFilter: function () {
+    toggleAdvancedFilter: function() {
         var animation_time = 1000;
         var minime = this;
         if (!this.advanced_filters_show) {
             this.dom.filter_root_wrapper.animate({left: -250}, animation_time);
             this.dom.filter_advanced_toggle_show.removeClass(this.options.templates.filter_toggle_active_class);
             this.dom.filter_advanced_toggle_show.addClass(this.options.templates.filter_toggle_inactive_class);
-            setTimeout(function () {
+            setTimeout(function() {
                 minime.dom.filter_advanced_toggle_show.removeClass("oi-caret-left");
                 minime.dom.filter_advanced_toggle_show.addClass("oi-caret-right");
                 minime.dom.filter_advanced_toggle_show.addClass(minime.options.templates.filter_toggle_active_class);
@@ -1334,7 +1444,7 @@ Dataprospector.prototype = {
             this.dom.filter_root_wrapper.animate({left: 0}, animation_time);
             this.dom.filter_advanced_toggle_show.removeClass(this.options.templates.filter_toggle_active_class);
             this.dom.filter_advanced_toggle_show.addClass(this.options.templates.filter_toggle_inactive_class);
-            setTimeout(function () {
+            setTimeout(function() {
                 minime.dom.filter_advanced_toggle_show.addClass("oi-caret-left");
                 minime.dom.filter_advanced_toggle_show.removeClass("oi-caret-right");
                 minime.dom.filter_advanced_toggle_show.addClass(minime.options.templates.filter_toggle_active_class);
@@ -1343,7 +1453,7 @@ Dataprospector.prototype = {
             this.advanced_filters_show = false;
         }
     },
-    filterItems: function () {
+    filterItems: function() {
         var i, rendered;
         for (i = 0; i < this.options.data.length; i++) {
             this.options.data[i].filtered_out = false;
@@ -1398,16 +1508,21 @@ Dataprospector.prototype = {
         var keys = Object.keys(this.filtering.options);
         for (i = 0; i < keys.length; i++)
             this.disableUnavailableOptions(keys[i], this.filtering.options[keys[i]]);
+        if (this.options.plot.visible) {
+            this.plotTimeoutCount++;
+            setTimeout(this.plotTimeout(), 200);
+        }
+
     },
     // for unique form name / ID
-    generateRandomString: function (length) {
+    generateRandomString: function(length) {
         var text = "";
         var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
         for (var i = 0; i < length; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         return text;
     },
-    countRendered: function () {
+    countRendered: function() {
         var i, rendered = 0;
         for (i = 0; i < this.options.data.length; i++) {
             if (!this.options.data[i].filtered_out)
@@ -1415,10 +1530,10 @@ Dataprospector.prototype = {
         }
         return rendered;
     },
-    correctFilterHeight: function () {
+    correctFilterHeight: function() {
         this.dom.filter_root.animate({"min-height": Math.max(this.dom.filter_root_wrapper.height(), this.dom.filter_page_advanced.height()) + 10}, this.options.filter_animation_time);
     },
-    toggleShowFilters: function () {
+    toggleShowFilters: function() {
         var animationTime = this.options.filter_animation_time;
         var minime = this;
         // open
@@ -1429,7 +1544,7 @@ Dataprospector.prototype = {
             this.dom.root_wrapper.animate({
                 "min-height": this.dom.filter_root_wrapper.height()
             }, animationTime / 2);
-            setTimeout(function () {
+            setTimeout(function() {
                 minime.dom.filter_root.animate({
                     width: "250px"
                 }, animationTime);
@@ -1438,7 +1553,7 @@ Dataprospector.prototype = {
                 }, animationTime);
                 minime.dom.filter_toggle_show.removeClass(minime.options.templates.filter_toggle_active_class);
                 minime.dom.filter_toggle_show.addClass(minime.options.templates.filter_toggle_inactive_class);
-                setTimeout(function () {
+                setTimeout(function() {
                     minime.dom.filter_toggle_show.removeClass("oi-caret-left");
                     minime.dom.filter_toggle_show.addClass("oi-caret-right");
                     minime.dom.filter_toggle_show.addClass(minime.options.templates.filter_toggle_active_class);
@@ -1456,13 +1571,13 @@ Dataprospector.prototype = {
             }, animationTime);
             this.dom.filter_toggle_show.removeClass(this.options.templates.filter_toggle_active_class);
             this.dom.filter_toggle_show.addClass(this.options.templates.filter_toggle_inactive_class);
-            setTimeout(function () {
+            setTimeout(function() {
                 minime.dom.filter_toggle_show.addClass("oi-caret-left");
                 minime.dom.filter_toggle_show.removeClass("oi-caret-right");
                 minime.dom.filter_toggle_show.addClass(minime.options.templates.filter_toggle_active_class);
                 minime.dom.filter_toggle_show.removeClass(minime.options.templates.filter_toggle_inactive_class);
             }, animationTime / 2);
-            setTimeout(function () {
+            setTimeout(function() {
                 // minime.dom.root.animate({
                 //     "min-height": 0
                 // }, animationTime / 2);
@@ -1473,13 +1588,13 @@ Dataprospector.prototype = {
             this.filters_show = false;
         }
     },
-    toggleItemSelected: function (event) {
+    toggleItemSelected: function(event) {
         var i = $(event.currentTarget).attr("name");
         var selected = !this.options.data[i]['selected'];
         this.options.data[i]['selected'] = selected;
         $(event.currentTarget).prop("checked", selected);
     },
-    listSelectedAttribute: function (attribute) {
+    listSelectedAttribute: function(attribute) {
         var i, result = [];
 
         for (i = 0; i < this.options.data.length; i++) {
@@ -1488,7 +1603,7 @@ Dataprospector.prototype = {
         }
         return result;
     },
-    listSelectedElements: function () {
+    listSelectedElements: function() {
         var i, result = [];
 
         for (i = 0; i < this.options.data.length; i++) {
@@ -1497,12 +1612,12 @@ Dataprospector.prototype = {
         }
         return result;
     },
-    externalFilter: function (filters) {
+    externalFilter: function(filters) {
         this.options.external_filters = filters;
         this.filterItems();
 
     },
-    downloadSelected: function (format) {
+    downloadSelected: function(format) {
         var selected_elements = this.listSelectedElements();
         var dataStr = "Invalid format";
         this.dom.download_href_placeholder.attr("download", "selected.txt");
@@ -1590,7 +1705,213 @@ Dataprospector.prototype = {
         this.dom.download_href_placeholder.attr("href", dataStr);
         this.dom.download_href_placeholder[0].click();
     },
-    contextMenu: function (event) {
+    headerContextMenu: function(event) {
+        var relX = event.pageX - this.dom.document_subroot.offset().left;
+        var relY = event.pageY - this.dom.document_subroot.offset().top;
+        this.header_context_menu_column = $(event.target).attr("class").replace("item_", "");
+        this.dom.header_context_menu.finish().toggle().css("left", relX - 10).css('top', relY - 10);
+        event.preventDefault();
+    },
+    headerContextMenuClose: function() {
+        this.dom.header_context_menu.hide();
+    },
+    headerContextMenuEvent: function(event) {
+        if ($(event.target)[0] == this.dom.header_context_menu[0])
+            return;
+        var i;
+        var selected_menu = $(event.target).attr("data-action");
+
+        if (this.options.header_names && this.options.header_names[this.header_context_menu_column])
+            yaxisName = this.options.header_names[this.header_context_menu_column];
+
+        if (selected_menu == 'plot') {
+            this.options.plot.mode = "selected";
+            this.options.plot.xaxis = false;
+            this.options.plot.yaxis = this.header_context_menu_column;
+
+        }
+        if (selected_menu == 'plot_all') {
+            this.options.plot.mode = "all";
+            this.options.plot.xaxis = false;
+            this.options.plot.yaxis = this.header_context_menu_column;
+        }
+        this.options.plot.visible = true;
+        this.renderPlot();
+        // sticking the plot div right under the mouse, wherever it is
+        this.dom.plot.css("top", event.screenY - event.view.screenTop);
+        this.headerContextMenuClose();
+        this.plotUpdateSelects();
+
+
+    },
+    renderPlot: function() {
+        var selected_list = [];
+        var i;
+        var xaxisUnit = this.options.units[this.options.plot.xaxis];
+        var yaxisUnit = this.options.units[this.options.plot.yaxis];
+        var yaxisName = this.options.header_names[this.options.plot.yaxis];
+        var xaxisName = this.options.header_names[this.options.plot.xaxis];
+        var highlighterYvalues = 3;
+        var highlighterFormatString = '%s %s,<br/>%s';
+
+        if (!yaxisName)
+            this.options.plot.yaxis;
+        if (!xaxisUnit)
+            xaxisUnit = '';
+        if (!yaxisUnit)
+            yaxisUnit = '';
+
+
+        if (this.options.plot.mode == 'selected') {
+            var selected = 0;
+            if (this.options.plot.xaxis) {
+                for (i = 0; i < this.options.data.length; i++) {
+                    if (this.options.data[i].selected) {
+                        selected++;
+                        selected_list.push([this.options.data[i][this.options.plot.xaxis], this.options.data[i][this.options.plot.yaxis], yaxisUnit, this.options.data[i][this.options.plot.xaxis], xaxisUnit, this.options.data[i][this.options.plot_id]]);
+                    }
+                }
+                highlighterYvalues = 5;
+                highlighterFormatString = '%s %s,<br/>%s %s,<br/>%s';
+
+            } else {
+                for (i = 0; i < this.options.data.length; i++) {
+                    if (this.options.data[i].selected) {
+                        selected++;
+                        selected_list.push([i, this.options.data[i][this.options.plot.yaxis], yaxisUnit, this.options.data[i][this.options.plot_id]]);
+                    }
+                }
+            }
+        }
+        if (selected == 0 || this.options.plot.mode == 'all') {
+            selected_list = [];
+            if (this.options.plot.xaxis) {
+                for (i = 0; i < this.options.data.length; i++) {
+                    if (!this.options.data[i].filtered_out)
+                        selected_list.push([this.options.data[i][this.options.plot.xaxis], this.options.data[i][this.options.plot.yaxis], yaxisUnit, this.options.data[i][this.options.plot.xaxis], xaxisUnit, this.options.data[i][this.options.plot_id]]);
+
+                    // selected_list.push([this.options.data[i][this.options.plot.xaxis], this.options.data[i][this.options.plot.yaxis], yaxisUnit, this.options.data[i][this.options.plot_id]]);
+                }
+                highlighterYvalues = 5;
+                highlighterFormatString = '%s %s,<br/>%s %s,<br/>%s';
+
+            } else {
+                for (i = 0; i < this.options.data.length; i++) {
+                    if (!this.options.data[i].filtered_out)
+                        selected_list.push([i, this.options.data[i][this.options.plot.yaxis], yaxisUnit, this.options.data[i][this.options.plot_id]]);
+                }
+
+            }
+        }
+        this.dom.plot_graph.html("");
+        this.dom.plot.show();
+        this.dom.plot.css("width", this.dom.root_wrapper.css("width"));
+        $.jqplot.config.enablePlugins = true;
+        if (selected_list.length > 0)
+            this.options.plot.plotter = $(this.dom.plot_graph).jqplot([selected_list], {
+                axes: {
+                    xaxis: {
+                        label: xaxisName,
+                        numberTicks: 10,
+                        tickOptions: {
+                            suffix: ' ' + xaxisUnit
+                        }
+
+                    },
+                    yaxis: {
+                        label: yaxisName,
+                        tickOptions: {
+                            suffix: ' ' + yaxisUnit
+                        }
+                    }
+                },
+                highlighter: {
+                    show: true,
+                    sizeAdjust: 10,
+                    tooltipLocation: 's',
+                    tooltipAxes: 'y',
+                    yvalues: highlighterYvalues,
+                    formatString: highlighterFormatString
+                },
+                cursor: {
+                    show: true,
+                    zoom: true,
+                    looseZoom: false,
+                    constrainOutsideZoom: false,
+                    tooltip: false
+                },
+                seriesDefaults: {
+                    showLine: false
+                }
+            });
+        var minime = this;
+        this.options.plot.plotter.data().jqplot.postDrawHooks.add(function(event) {
+            if (this.plugins.cursor._zoom.zooming)
+                minime.plotFilterFromZoom();
+        });
+
+        this.dom.plot.find(".jqplot-event-canvas").on("dblclick", function(event) {
+            // event.preventDefault();
+            minime.plotFilterReset();
+        });
+
+
+        this.options.plot.visible = true;
+    },
+    plotClose: function() {
+        this.dom.plot.hide();
+        this.options.plot.visible = false;
+    },
+    plotUpdateSelects: function() {
+        this.dom.plot.find("select.xaxis").val(this.options.plot.xaxis);
+        this.dom.plot.find("select.yaxis").val(this.options.plot.yaxis);
+        this.dom.plot.find("input[name='selected_items']").prop('checked', this.options.plot.mode == "selected");
+    }
+    ,
+    plotUpdateFromSelects: function() {
+        this.options.plot.xaxis = this.dom.plot.find("select.xaxis").val();
+        this.options.plot.yaxis = this.dom.plot.find("select.yaxis").val();
+        if (this.options.plot.xaxis == 0)
+            this.options.plot.xaxis = false;
+        if (this.options.plot.yaxis == 0)
+            this.options.plot.yaxis = false;
+
+        if (this.dom.plot.find("input[name='selected_items']:checked").size() > 0) {
+            this.options.plot.mode = "selected";
+        } else {
+            this.options.plot.mode = "all";
+        }
+        this.renderPlot();
+    },
+    plotFilterFromZoom: function() {
+        if (this.options.plot.xaxis) {
+            this.filtering.slider[this.options.plot.xaxis].slider("setValue",
+                [this.options.plot.plotter.data().jqplot.axes.xaxis.min,
+                    this.options.plot.plotter.data().jqplot.axes.xaxis.max]);
+        }
+        if (this.options.plot.yaxis)
+            this.filtering.slider[this.options.plot.yaxis].slider("setValue",
+                [this.options.plot.plotter.data().jqplot.axes.yaxis.min,
+                    this.options.plot.plotter.data().jqplot.axes.yaxis.max]);
+
+        this.filterItems();
+    },
+    plotFilterReset: function() {
+        if (this.options.plot.xaxis) {
+            this.filtering.slider[this.options.plot.xaxis].slider("setValue",
+                [this.filtering.slider[this.options.plot.xaxis].data().sliderMin,
+                    this.filtering.slider[this.options.plot.xaxis].data().sliderMax]);
+        }
+        if (this.options.plot.yaxis)
+            this.filtering.slider[this.options.plot.yaxis].slider("setValue",
+                [this.filtering.slider[this.options.plot.yaxis].data().sliderMin,
+                    this.filtering.slider[this.options.plot.yaxis].data().sliderMax]);
+
+        this.filterItems();
+
+    }
+    ,
+    contextMenu: function(event) {
 
         var relX = event.pageX - this.dom.document_subroot.offset().left;
         var relY = event.pageY - this.dom.document_subroot.offset().top;
@@ -1601,11 +1922,13 @@ Dataprospector.prototype = {
             this.dom.item_details_placeholder_element.css("display", "none");
         }
         event.preventDefault();
-    },
-    contextMenuClose: function () {
+    }
+    ,
+    contextMenuClose: function() {
         this.dom.context_menu.hide();
-    },
-    contextMenuEvent: function (event) {
+    }
+    ,
+    contextMenuEvent: function(event) {
         if ($(event.target)[0] == this.dom.context_menu[0])
             return;
         var i;
@@ -1623,22 +1946,17 @@ Dataprospector.prototype = {
             this.renderListPaginated();
         }
         if (selected_menu == 'filter_like') {
-            var external_filters = this.options.external_filters;
-            if (!external_filters)
-                external_filters = [];
-            var filter = {};
-            filter['name'] = this.context_menu_column;
             if (this.options.header_types[this.context_menu_column] == 'range') {
-                filter['type'] = 'range';
-                filter['min'] = this.options.data[this.context_menu_row][this.context_menu_column];
-                filter['max'] = this.options.data[this.context_menu_row][this.context_menu_column];
+                this.filtering.slider[this.context_menu_column].slider("setValue", [this.options.data[this.context_menu_row][this.context_menu_column], this.options.data[this.context_menu_row][this.context_menu_column]])
             }
-            if (this.options.header_types[this.context_menu_column] == 'string' || this.options.header_types[this.context_menu_column] == 'options') {
-                filter['type'] = 'string';
-                filter['string'] = this.options.data[this.context_menu_row][this.context_menu_column].trim();
+            if (this.options.header_types[this.context_menu_column] == 'string') {
+                this.filtering.string[this.context_menu_column].val(this.options.data[this.context_menu_row][this.context_menu_column]);
             }
-            external_filters.push(filter);
-            this.options.external_filters = external_filters;
+
+            if (this.options.header_types[this.context_menu_column] == 'options') {
+                this.filtering.options[this.context_menu_column].multiselect('deselectAll', false);
+                this.filtering.options[this.context_menu_column].multiselect("select", this.options.data[this.context_menu_row][this.context_menu_column]);
+            }
             this.filterItems();
 
 
@@ -1686,6 +2004,13 @@ Dataprospector.prototype = {
         this.contextMenuClose();
 
     }
+    ,
+    plotTimeoutCount: 0,
+    plotTimeout: function() {
+        if (--this.plotTimeoutCount == 0) {
+            this.renderPlot();
+        }
+    }
 }
 ;
 /**
@@ -1694,7 +2019,7 @@ Dataprospector.prototype = {
  * ------------------------------------------------------------------------
  */
 
-$.fn.dataprospector = function (option) {
+$.fn.dataprospector = function(option) {
     var data = $(this).data('dataprospector');
     if (!data) {
         data = new Dataprospector(this, option);

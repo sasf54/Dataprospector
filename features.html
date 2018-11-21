@@ -1,31 +1,31 @@
 <html>
 
 <head>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-        <title>dataprospector - Features</title>
-        <script type='text/javascript' src="js/jquery-1.9.1.0.min.js"></script>
-        <script type='text/javascript' src="js/bootstrap.js"></script>
-        <script type='text/javascript' src="js/bootstrap-multiselect.js"></script>
-        <script type='text/javascript' src="js/bootstrap-slider.js"></script>
-        <!--<script type='text/javascript' src="js/bootstrap-dataprospector.js"></script>-->
-        <script type='text/javascript' src="js/bootstrap-dataprospector.min.js"></script>
-        <script type='text/javascript' src="js/jquery.csv.js"></script>
-        <script type='text/javascript' src="js/cpu_items.js"></script>
-        <script type='text/javascript' src="js/mb_items.js"></script>
-        <link href="css/bootstrap.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
-        <!--<link href="css/bootstrap-dataprospector.css" rel="stylesheet">-->
-        <link href="css/bootstrap-dataprospector.min.css" rel="stylesheet">
-        <link href="css/bootstrap-multiselect.css" rel="stylesheet">
-        <link href="css/bootstrap-slider.css" rel="stylesheet">
-        <link href="css/open-iconic-bootstrap.css" rel="stylesheet">
+    <title>dataprospector - Features</title>
+    <script type='text/javascript' src="js/jquery-1.9.1.0.min.js"></script>
+    <script type='text/javascript' src="js/bootstrap.js"></script>
+    <script type='text/javascript' src="js/bootstrap-multiselect.js"></script>
+    <script type='text/javascript' src="js/bootstrap-slider.js"></script>
+    <script type='text/javascript' src="js/bootstrap-dataprospector.js"></script>
+    <script type='text/javascript' src="js/jquery.csv.js"></script>
+    <script type='text/javascript' src="js/cpu_items.js"></script>
+    <script type='text/javascript' src="js/mb_items.js"></script>
+    <script type='text/javascript' src="js/jquery-ui.js"></script>
+    <script type='text/javascript' src="js/jquery.jqplot.min.js"></script>
+    <script type='text/javascript' src="js/jqplot.highlighter.js"></script>
+    <script type='text/javascript' src="js/jqplot.cursor.js"></script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrap-dataprospector.css" rel="stylesheet">
+    <link href="css/bootstrap-multiselect.css" rel="stylesheet">
+    <link href="css/bootstrap-slider.css" rel="stylesheet">
+    <link href="css/open-iconic-bootstrap.css" rel="stylesheet">
 
-    </head>
 </head>
 <body>
 <nav class="navbar  navbar-toggleable-md navbar-light bg-inverse navbar-inverse sticky-top">
@@ -54,6 +54,8 @@
                        title="Init from file open">Example 5</a>
                     <a class="dropdown-item tooltip_init" href="dataprospector6.html" data-toggle="tooltip"
                        title="Init from array - array and advanced filters">Example 6</a>
+                    <a class="dropdown-item tooltip_init" href="dataprospector7.html" data-toggle="tooltip"
+                       title="Use graph to visualize / filter">Example 7</a>
                 </div>
             </li>
         </ul>
@@ -80,17 +82,18 @@
                                id="example_dataprospector1_creator"/>
                     </div>
                     <script type="text/javascript">
-                        var example_table1;
+                        var example_table1, et1;
 
                         function example1() {
-                            example_table1 = new Dataprospector($('#example_dataprospector1'), {
+                            et1 = example_table1 = new Dataprospector($('#example_dataprospector1'), {
                                 data: cpu_items,
                                 header_shown: ['name', 'price', 'cores', 'freq', 'family'],
                                 advanced_filters: [{name: "price / cores", formula: "price/cores", unit: "Ft / Db"}],
                                 selection: true,
                                 context_menu: true,
                                 context_menu_download: true,
-                                filters_opened: true
+                                filters_opened: true,
+                                plot_id: 'name'
                             });
                             $("#example_dataprospector1_creator").prop("disabled", true);
 
@@ -109,26 +112,27 @@
                         <code>...
                             <div class="tab1">&lt;head&gt;</div>
                             <div class="tab1 dependency">&lt;script type='text/javascript'
-                                src="js/jquery-1.9.1.0.min.js"&gt;&lt;/script&gt;
+                                                         src="js/jquery-1.9.1.0.min.js"&gt;&lt;/script&gt;
                             </div>
                             <div class="tab1 dependency">&lt;script type='text/javascript'
-                                src="js/bootstrap.js"&gt;&lt;/script&gt;
+                                                         src="js/bootstrap.js"&gt;&lt;/script&gt;
                             </div>
                             <div class="tab1 dependency">&lt;script type='text/javascript' src="js/bootstrap-slider.js"&gt;&lt;/script&gt;</div>
                             <div class="tab1 dependency">&lt;script type='text/javascript'
-                                src="js/bootstrap-multiselect.js"&gt;&lt;/script&gt;
+                                                         src="js/bootstrap-multiselect.js"&gt;&lt;/script&gt;
                             </div>
                             <div class="tab1 dependency">&lt;script type='text/javascript' src="js/jquery.csv.js"&gt;&lt;/script&lt;</div>
                             <div class="tab1">&lt;script type='text/javascript' src="js/bootstrap-dataprospector.js"&gt;&lt;/script&gt;</div>
                             <div class="tab1 dependency">&lt;link href="css/bootstrap.css" rel="stylesheet"&gt;</div>
                             <div class="tab1 dependency">&lt;link href="css/bootstrap-slider.css"
-                                rel="stylesheet"&gt;
+                                                         rel="stylesheet"&gt;
                             </div>
                             <div class="tab1 dependency">&lt;link href="css/bootstrap-multiselect.css" rel="stylesheet"&gt;</div>
                             <div class="tab1 dependency">&lt;link href="css/open-iconic-bootstrap.css" rel="stylesheet"&gt;</div>
-                            <div class="tab1">&lt;link href="css/bootstrap-dataprospector.css" rel="stylesheet"&gt;</div>
+                            <div class="tab1">&lt;link href="css/bootstrap-dataprospector.css"
+                                              rel="stylesheet"&gt;</div>
                             <div class="tab1">&lt;/head&gt;</div>
-                            ... </code>
+                              ... </code>
                     </div>
                     <div class="paragraph-step">
                         This plugin depends on:
@@ -145,12 +149,12 @@
                         Setup the HTML element, where you want to use
                         <code>...
                             <div class="tab1">&lt;div class="panel-collapse collapse show"
-                                id="cpuPanel"&gt;&lt;/div&gt;
+                                              id="cpuPanel"&gt;&lt;/div&gt;
                             </div>
                             <div class="tab1">&lt;div class="panel-collapse collapse show"
-                                id="cpuPanel2"&gt;&lt;/div&gt;
+                                              id="cpuPanel2"&gt;&lt;/div&gt;
                             </div>
-                            ... </code>
+                              ... </code>
                     </div>
                     <div class="paragraph-step">
                         Initialise from javascript (cpu_items is an already filled javascript array of structure.)
@@ -165,7 +169,7 @@
                             <div class="tab3">header_shown: ['domain', 'name', 'price']</div>
                             <div class="tab2">});</div>
                             <div class="tab1">&lt;/script&gt;</div>
-                            ... </code>
+                              ... </code>
                         It can be initialized, as jquery.dataprospector, or as new Dataprospector..
                         The data will be cloned by default, so don't worry.
                     </div>
@@ -180,7 +184,7 @@
                         example:
                         <code>
                             <div class="tab1">var cpu_items = [{ "domain":"ipon.hu", "name":"AMD A4-4020 3.20GHz FM2
-                                BOX",...},{...},...]
+                                              BOX",...},{...},...]
                             </div>
                         </code>
                         <h4>javascript array of array:</h4>
@@ -188,7 +192,7 @@
                         (array containing array ([[],[]])) <br/>
                         <code>
                             <div class="tab1">var cpu_items_array= [
-                                [ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor",...],[...],...]
+                                              [ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor",...],[...],...]
                             </div>
                         </code>
                         existing table<br/>
@@ -304,7 +308,7 @@
 
                         <script type="application/javascript">
                             var file_example;
-                            $("#file_input_example").on("change", function () {
+                            $("#file_input_example").on("change", function() {
                                 file_example = new Dataprospector($("#file_input_example"), {
                                     context_menu: true,
                                     context_menu_download: true
@@ -381,7 +385,7 @@
                         </div>
                     </div>
                     <h5 class="feature">Enum: List of possible options: Dropdown (select + options, multiselect
-                        ANY)</h5>
+                                        ANY)</h5>
                     <div class="example_input">
                         <div class="row w-100">
                             <div class="w-100 mr-2">
@@ -540,7 +544,7 @@
                         </div>
                     </div>
                     <h5 class="feature">Text: Was not able to categorise, light text filtering (word by
-                        word)</h5>
+                                        word)</h5>
                     <div class="example_input">
                         <div class="row w-100">
                             <div class="w-100 mr-2">
@@ -562,7 +566,7 @@
                         </div>
                     </div>
                     <h5 class="feature">Array number: list of numbers, delimited by coma (,) -> slider (Minimum,
-                        Maximum)</h5>
+                                        Maximum)</h5>
                     <div class="example_input">
                         <div class="row w-100">
                             <div class="w-100 mr-2">
@@ -617,7 +621,7 @@
                         </div>
                     </div>
                     <h5 class="feature">Array text: list of text, delimited by coma (,) -> Dropdown (select +
-                        options)</h5>
+                                        options)</h5>
                     <div class="example_input">
                         <div class="row w-100">
                             <div class="w-100 mr-2">
@@ -899,7 +903,7 @@
 
                                 example_table2.options.filter_animation_time = 10;
                                 example_table2.toggleShowFilters(example_table2);
-                                setTimeout(function () {
+                                setTimeout(function() {
                                     example_table2.toggleShowFilters(example_table2);
                                     example_table2.options.filter_animation_time = 1000;
                                 }, 10);
@@ -985,7 +989,7 @@
 
                                 example_table8.options.filter_animation_time = 10;
                                 example_table8.toggleShowFilters(example_table8);
-                                setTimeout(function () {
+                                setTimeout(function() {
                                     example_table8.toggleShowFilters(example_table8);
                                     example_table8.options.filter_animation_time = 1000;
                                 }, 10);
@@ -1024,10 +1028,12 @@
                     <div class="paragraph-step">
                         You can load a local json, or csv file to find the valuable data you need.<br/>
                         You create an input type="file" element, and set up a listener for a file selected.<br/>
-                        It will trigger the creation. It will remove the input element, and replace it with a div and the datacontents.<br/>
+                        It will trigger the creation. It will remove the input element, and replace it with a div and
+                        the datacontents.<br/>
                         The json should have to have one of the following format:<br/>
                         array : array = [ ['e','r','t'],['s','d','f'],...]<br/>
-                        array : object = [ {name:'e',"tricky-name":'r',description:'t'},{name:'s',"tricky-name":'d',description:'f'}...]<br/>
+                        array : object = [
+                        {name:'e',"tricky-name":'r',description:'t'},{name:'s',"tricky-name":'d',description:'f'}...]<br/>
                         The csv (Coma separated values) has fulfill the following rules:
                         <ul>
                             <li>The separator should be , (coma)</li>
@@ -1056,7 +1062,7 @@
                             </code>
                             <script type="application/javascript">
                                 var file_example2;
-                                $("#file_input_example2").on("change", function () {
+                                $("#file_input_example2").on("change", function() {
                                     file_example2 = new Dataprospector($("#file_input_example2"), {
                                         context_menu: true,
                                         context_menu_download: true
@@ -1102,7 +1108,7 @@
 
                                 example_table6.options.filter_animation_time = 10;
                                 example_table6.toggleShowFilters(example_table6);
-                                setTimeout(function () {
+                                setTimeout(function() {
                                     example_table6.toggleShowFilters(example_table6);
                                     example_table6.options.filter_animation_time = 1000;
                                 }, 10);
@@ -1128,11 +1134,11 @@
                             <div class="tab4">{name: "price/score",formula: "price/bench_score",unit: "Ft/Sc"},
                             </div>
                             <div class="tab4">{name: "price/freq*cores", formula: "price/(freq*cores)", unit:
-                                "Ft/MhzCore"}]
+                                              "Ft/MhzCore"}]
                             </div>
                             <div class="tab2">});</div>
                             <div class="tab1"> &lt;/script&gt;</div>
-                            ... </code>
+                              ... </code>
                         Ether form is accessible, as jquery.databale, as new Dataprospector..
                         The data will be cloned, so don't worry.
                     </div>
@@ -1160,8 +1166,8 @@
                         Using structured data (json)<br/>
                         <code>
                             <div class="tab1">var cpu_items = [{ "domain":"ipon.hu", "name":"AMD A4-4020 3.20GHz FM2
-                                BOX", "price":8490,
-                                "power":10, "cores":2, "freq":3200, ...
+                                              BOX", "price":8490,
+                                              "power":10, "cores":2, "freq":3200, ...
                             </div>
                             ...
                             <div class="tab1">advanced_filters: [</div>
@@ -1172,9 +1178,9 @@
                         Using un-named data (array)<br/>
                         <code>
                             <div class="tab1">var cpu_items_array= [
-                                [ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor", 15656, 95, 4,
-                                3800, "AMD AM3+", "AMD
-                                FX", "AMD FX-4300", 4672, "0.0", "AMD FX-4300", 1410, "0.0"],...
+                                              [ "www.pcx.hu", "AMD FX-4300 FD4300WMHKBOX processzor", 15656, 95, 4,
+                                              3800, "AMD AM3+", "AMD
+                                              FX", "AMD FX-4300", 4672, "0.0", "AMD FX-4300", 1410, "0.0"],...
                             </div>
                             ...
                             <div class="tab1">advanced_filters: [</div>
@@ -1182,7 +1188,8 @@
                             <div class="tab2">...</div>
                         </code>
                         You have to put col_ and an ending _ (underscore) after the column number<br/>
-                        col_2_ is the 3. column (you know, the sane programming languages are starting to count from 0)<br/>
+                        col_2_ is the 3. column (you know, the sane programming languages are starting to count from
+                        0)<br/>
                         col_3_ is the 4. and col_10_ is the 11.<br/>
 
                         <strong>unit</strong>
@@ -1275,7 +1282,7 @@
 
                             example_table3.options.filter_animation_time = 10;
                             example_table3.toggleShowFilters(example_table3);
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 example_table3.toggleShowFilters(example_table3);
                                 example_table3.options.filter_animation_time = 1000;
                             }, 10);
@@ -1318,7 +1325,7 @@
                             });
                             example_table4.options.filter_animation_time = 10;
                             example_table4.toggleShowFilters(example_table4);
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 example_table4.toggleShowFilters(example_table4);
                                 example_table4.options.filter_animation_time = 1000;
                             }, 10);
@@ -1329,20 +1336,20 @@
 
                         function example4a() {
                             example_table4.externalFilter(
-                                [{name: 'price', type: 'range', min: 0, max: 50000}]
+                                    [{name: 'price', type: 'range', min: 0, max: 50000}]
                             );
                         }
 
                         function example4b() {
                             example_table4.externalFilter(
-                                [{name: 'freq', type: 'range', min: 3500, max: Infinity}]
+                                    [{name: 'freq', type: 'range', min: 3500, max: Infinity}]
                             );
                         }
 
                         function example4c() {
                             example_table4.externalFilter(
-                                [{name: 'price', type: 'range', min: 0, max: 50000},
-                                    {name: 'freq', type: 'range', min: 3500, max: Infinity}]
+                                    [{name: 'price', type: 'range', min: 0, max: 50000},
+                                        {name: 'freq', type: 'range', min: 3500, max: Infinity}]
                             );
                         }
 
@@ -1460,7 +1467,7 @@
                             });
                             example_table5.options.filter_animation_time = 10;
                             example_table5.toggleShowFilters(example_table5);
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 example_table5.toggleShowFilters(example_table5);
                                 example_table5.options.filter_animation_time = 1000;
                             }, 10);
@@ -1471,25 +1478,25 @@
 
                         function example5a() {
                             example_table5.externalFilter(
-                                [{name: 'price', type: 'range', min: 5000, max: 15000}]
+                                    [{name: 'price', type: 'range', min: 5000, max: 15000}]
                             );
                         }
 
                         function example5b() {
                             example_table5.externalFilter(
-                                [{name: 'name', type: 'string', string: "prime"}]
+                                    [{name: 'name', type: 'string', string: "prime"}]
                             );
                         }
 
                         function example5c() {
                             example_table5.externalFilter(
-                                [{name: 'mem_speed', type: 'array_range', min: 3500, max: Infinity}]
+                                    [{name: 'mem_speed', type: 'array_range', min: 3500, max: Infinity}]
                             );
                         }
 
                         function example5d() {
                             example_table5.externalFilter(
-                                [{name: 'cpu_slot', type: 'array_string', enums: ["Socket-FM2+", "Socket-AM4"]}]
+                                    [{name: 'cpu_slot', type: 'array_string', enums: ["Socket-FM2+", "Socket-AM4"]}]
                             );
                         }
 
@@ -1521,7 +1528,7 @@
                     <code>
                         <div class="tab1">example_table5.externalFilter(</div>
                         <div class="tab2">[{name: 'cpu_slot', type: 'array_string',
-                            enums:["Socket-FM2+","Socket-AM4"]}]
+                                          enums:["Socket-FM2+","Socket-AM4"]}]
                         </div>
                         <div class="tab1">);</div>
                     </code>
@@ -1533,6 +1540,104 @@
                 </div>
             </div>
         </div>
+        <a data-toggle="collapse" href="#featurePlotting"><h4>Plotting / graphing</h4></a>
+        <div class="w-100 mb-5">
+            Graph of the elements (plotting)
+            <div class="panel-collapse collapse " id="featurePlotting">
+                <div class="paragraph-step">
+                    You can display and filter in a graph mode. Right click on one of the headers, and plot all.
+                    It will plotted, and you can select one or two axes to display by.
+                    By selecting an area in the graph, you will zoom, and filter it (visible elements (not selected)
+                    (!filtered_out)).
+                    When zoomed, it will auto reset the filters of the axises , and it will also
+                    auto reset those filters, when resetting the zoom (by [Reset zoom] button, or double click in the
+                    graph).
+                </div>
+                <div class="paragraph-step">
+                    <h4>Try it yourself</h4>
+                    <div id="example_dataprospector7" class="w-100 example_table"></div>
+                    <input type="button" value="Fill the dataprospector" onclick="example7();"
+                           id="example_dataprospector7_creator"/>
+                    <script type="text/javascript">
+                        var example_table7;
+
+                        function example7() {
+                            example_table7 = new Dataprospector($('#example_dataprospector7'), {
+                                data: cpu_items,
+                                header_shown: ['name', 'price', 'cores', 'freq'],
+                                items_per_page: 20,
+                                plot_id: 'name',
+                                filters_opened: true
+
+                            });
+                            return false;
+                        }
+
+                    </script>
+
+                </div>
+                <div class="paragraph-step">
+                    <code>
+                        &lt;script type='text/javascript' src="js/jquery-ui.js"&gt;&lt;/script&gt;<br/>
+                        &lt;script type='text/javascript' src="js/jquery.jqplot.min.js"&gt;&lt;/script&gt;<br/>
+                        &lt;script type='text/javascript' src="js/jqplot.highlighter.js"&gt;&lt;/script&gt;<br/>
+                        &lt;script type='text/javascript' src="js/jqplot.cursor.js"&gt;&lt;/script&gt;<br/>
+                        <br/>
+                        <div class="tab3"> ...</div>
+                        <br/>
+
+                        <div class="tab1">var example_table7;</div>
+                        <div class="tab1">function example7() {</div>
+                        <div class="tab2">example_table7 = new Dataprospector($('#example_dataprospector7'), {</div>
+                        <div class="tab3">data: cpu_items,</div>
+                        <div class="tab3">header_shown: ['name', 'price', 'cores', 'freq'],</div>
+                        <div class="tab3">items_per_page: 20,</div>
+                        <div class="tab3 font-weight-bold">plot_id: 'name',</div>
+                        <div class="tab3">filters_opened: true</div>
+                        <div class="tab2">});</div>
+
+                    </code>
+                </div>
+                <div class="paragraph-step">
+                    How to use it:<br/>
+                    You will need some extra libraries:
+                    <ul>
+                        <li><label class="js-lib">jquery-jqplot</label>Essential for rendering the graph</li>
+                        <li><label class="js-lib">jquery-ui (draggable)</label>Essential, needed for dragging the graph
+                        </li>
+                        <li><label class="js-lib">jqplot.highlighter</label>Renders the highlighter for the graph (when
+                                                                            mouse hovers over a point)
+                        </li>
+                        <li><label class="js-lib">jqplot.cursor</label>Handles mouse events for zoom in - zoom out</li>
+                    </ul>
+                    One extra parameter is required: <br/>
+                    <strong class="font-weight-bold">plot_id</strong>: the identifier of the column. As in the
+                    datasource.<br/>
+                    This will tell the dataprospector, what column is the ID / name of the entities, so it can use in
+                    highlight to identify it.<br/>
+                    <br/>
+                    It will auto recognise the range type columns, and use / list it in the select axis dropdown menus.
+                    You can select any other column by clicking it on the header, but it might not display anything, as
+                    the library (jqplot) can't plot strings.<br/>
+                    (Jqplot might support dates, but dataprospector does not support them yet.)
+                </div>
+                <div class="paragraph-step">
+                    Links:
+                    <ul>
+                        <li><a href="http://www.jqplot.com/">jquery-jqplot</a> All core and plugins in single zip
+                                                                               download.
+                        </li>
+                        <li><a href="https://jqueryui.com/download/">jquery-ui</a> you can download the top link (all in
+                                                                                   one), or build one with only with the
+                                                                                   draggable "interaction".
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
